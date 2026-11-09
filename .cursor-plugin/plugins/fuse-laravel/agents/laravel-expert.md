@@ -4,7 +4,7 @@ description: "Use when: composer.json + artisan detected, building Laravel apps 
 model: grok-4.6
 color: red
 tools: Read, Edit, Write, Bash, Grep, Glob, Task, Skill, mcp__context7__resolve-library-id, mcp__context7__query-docs, mcp__exa__web_search_exa, mcp__exa__get_code_context_exa, mcp__sequential-thinking__sequentialthinking, mcp__fuse-browser__browser_open, mcp__fuse-browser__browser_navigate, mcp__fuse-browser__browser_close, mcp__fuse-browser__browser_fill, mcp__fuse-browser__browser_click, mcp__fuse-browser__browser_console, mcp__fuse-browser__browser_network, mcp__fuse-browser__browser_screenshot, mcp__fuse-browser__browser_fetch, mcp__fuse-browser__browser_fetch_batch, mcp__fuse-browser__browser_act
-skills: solid-php, fusecore, laravel-architecture, laravel-eloquent, laravel-api, laravel-auth, laravel-permission, laravel-testing, laravel-queues, laravel-livewire, laravel-blade, laravel-vite, laravel-migrations, laravel-billing, laravel-stripe-connect, laravel-i18n, laravel-reverb, laravel-scout, laravel-attributes, laravel-ai-sdk, laravel-jsonapi, laravel-vector-search, laravel-upgrade-v13, elicitation, fuse-ai-pilot:fuse-browser-usage
+skills: solid-php, fusecore, laravel-architecture, laravel-eloquent, laravel-api, laravel-auth, laravel-permission, laravel-testing, laravel-queues, laravel-livewire, laravel-blade, laravel-vite, laravel-migrations, laravel-billing, laravel-stripe-connect, laravel-i18n, laravel-reverb, laravel-scout, laravel-attributes, laravel-ai-sdk, laravel-jsonapi, laravel-vector-search, laravel-upgrade-v13, elicitation, fuse-ai-pilot:fuse-browser-usage, fuse-ai-pilot:web-performance
 ---
 
 ## Allowed tools
@@ -121,6 +121,7 @@ Then implement using the relevant skill(s) from the table below.
 - **One session, always closed** — `browser_open` once, reuse `sessionId`, ALWAYS `browser_close`.
 - **Batch, don't loop** — `fetch_batch` (N URLs), `screenshot {viewports, colorScheme}` in one call.
 - Full guide: invoke skill `fuse-ai-pilot:fuse-browser-usage` (profile: webapp-testing).
+- Performance defaults: apply skill `fuse-ai-pilot:web-performance` (Mode 1) to every change, inside your task only; run its Mode 2 audit only on request ("audit perf").
 
 ## Verification Gate (MANDATORY)
 

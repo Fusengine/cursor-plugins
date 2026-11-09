@@ -87,19 +87,19 @@ git status
 ### Sync Frequently
 
 ```bash
-# Keep branch updated with main
+# Check how far the branch is behind main (read-only)
 git fetch origin main
-git rebase origin/main
-# OR
-git merge origin/main
+git log --oneline HEAD..origin/main
 ```
+
+Branch out of date with main → the commit agent's flow handles it (`fuse-ai-pilot:commit`, full mode, end of mandate); never rebase and force-push a shared branch yourself (force-push needs the owner).
 
 ### Clean Commits
 
 ```text
 ✅ Atomic commits (one logical change)
 ✅ Conventional commit messages
-✅ No WIP commits in final PR
+✅ One conventional WIP commit per verified task, made by agent `fuse-ai-pilot:commit` — they stay in history (merge is `--merge`, never squash)
 ```
 
 ---
@@ -116,17 +116,9 @@ git merge origin/main
 
 ---
 
-## Update Task Phase
+## Task Phase
 
-At the **start** of this phase, record it (and the resolved task subject) in `.cursor/apex/task.json`. This deterministic update keeps the task state accurate. The inspected local-harness source reads `tasks[current_task].phase` in its `preToolUse` Task-context path and intends to include it when briefing a sub-agent, so a stale or missing value could describe the wrong step if that context is delivered; actual Cursor briefing and delivery remain runtime-unverified because the public `preToolUse` and `subagentStart` outputs expose no `additional_context` field and the unpinned harness has not been authentically replayed:
-
-```bash
-jq --arg p "init-branch" --arg s "$TASK_SUBJECT" \
-  '.tasks[.current_task].phase = $p | .tasks[.current_task].subject = $s' \
-  .cursor/apex/task.json > .cursor/apex/task.json.tmp && mv .cursor/apex/task.json.tmp .cursor/apex/task.json
-```
-
-Replace `$TASK_SUBJECT` with the real task description (the branch name or the user's request), quoted for the shell.
+Phase: `init-branch`. Do not create or write `.cursor/apex/task.json`: on Cursor no tool syncs it (the harness task sync is Claude-only). State the phase in your REPORT; tracking lives in the agents' REPORTs and `docs/decisions.md`.
 
 ---
 

@@ -181,29 +181,31 @@ describe: Bug fix: [description]
 
 ## Commit Fixes
 
-### Fix Commit Format
+### Hand-off to the Commit Agent (after each verified fix)
 
-```bash
-# For validation fixes
-git commit -m "fix(scope): resolve linter error in Component"
+This phase never runs `git commit` itself. Once the fix is verified (checks re-run green, proofs in the REPORT), the commit goes to agent `fuse-ai-pilot:commit` in **WIP mode** (template HARD STOP 1; rules `06-tooling-rules`, Git & GitHub Flow):
 
-# For review fixes
-git commit -m "fix(scope): address review feedback on validation"
+- It makes one conventional commit on the working branch — no bump, no CHANGELOG, no push, no PR, no merge, no tag.
+- The lead launches it after each verified task; an APEX sub-agent never launches it and never runs `git commit` itself.
+- Brief it with: `mode: wip`, a suggested conventional message (examples below), and the files of the fix.
+- Push, PR, merge and tag happen only at the end of the mandate, in **full mode** (`09-create-pr.md`, "Hand-off to the Commit Agent").
 
-# For test fixes
-git commit -m "test(scope): fix flaky test in auth module"
-```
-
-### Keep History Clean
+### Suggested Messages (passed to the commit agent)
 
 ```text
-Option 1: Squash fix into original commit
-git rebase -i HEAD~N
-# Change 'pick' to 'fixup' for fix commits
+# Validation fix
+fix(scope): resolve linter error in Component
 
-Option 2: Separate fix commits (for traceability)
-# Keep as separate commits with clear messages
+# Review fix
+fix(scope): address review feedback on validation
+
+# Test fix
+test(scope): fix flaky test in auth module
 ```
+
+### History
+
+Never squash or rebase: a follow-up fix is its own commit, with its own conventional message. The end-of-mandate merge is a real `--merge`, so every fix commit stays readable in history.
 
 ---
 
@@ -255,14 +257,9 @@ Option 2: Separate fix commits (for traceability)
 
 ---
 
-## Update Task Phase
+## Task Phase
 
-At the **start** of this phase, record it in `.cursor/apex/task.json`:
-
-```bash
-jq --arg p "fix-issue" '.tasks[.current_task].phase = $p' .cursor/apex/task.json \
-  > .cursor/apex/task.json.tmp && mv .cursor/apex/task.json.tmp .cursor/apex/task.json
-```
+Phase: `fix-issue`. Do not create or write `.cursor/apex/task.json`: on Cursor no tool syncs it (the harness task sync is Claude-only). State the phase in your REPORT; tracking lives in the agents' REPORTs and `docs/decisions.md`.
 
 ---
 

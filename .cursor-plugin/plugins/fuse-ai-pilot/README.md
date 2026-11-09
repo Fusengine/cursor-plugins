@@ -12,7 +12,7 @@ resolving.
 | Component | Count | Cursor discovery |
 | :-- | :-- | :-- |
 | Agents (subagents) | 9 | `agents/*.md` |
-| Skills | 18 | `skills/<name>/SKILL.md` |
+| Skills | 19 | `skills/<name>/SKILL.md` |
 | Commands | 12 | `commands/*.md` |
 | Hooks | 5 events | `hooks/hooks.json` |
 | Docs | 1 | `docs/*.md` — content, not a Cursor component |
@@ -79,7 +79,7 @@ Cursor's subagent frontmatter is limited to `name`, `description`, `model`, `rea
 
 ### Skills
 
-All 17 satisfy Cursor's hard rule that `name:` equals the parent folder name. `references/`,
+All 19 satisfy Cursor's hard rule that `name:` equals the parent folder name. `references/`,
 `steps/` and nested per-stack folders are natively supported and were copied verbatim.
 
 `user-invocable` was **not** translated to `disable-model-invocation`. They are not inverses:
@@ -89,8 +89,8 @@ never auto-apply it", whereas Claude Code's `user-invocable: false` means "the u
 intent of 15 skills. Both keys are kept as-is.
 
 Keys preserved across the skills — absent from the docs, **not verified against the binary**, so
-their status is unknown rather than unsupported (R19): `user-invocable` (15), `argument-hint` (11),
-`references` (4), `related-skills` (4), `context` (4), `agent` (4), `versions` (2), `keywords` (2).
+their status is unknown rather than unsupported (R19): `user-invocable` (16), `argument-hint` (11),
+`references` (6), `related-skills` (6), `context` (4), `agent` (4), `versions` (2), `keywords` (2).
 
 One exception: `hooks` appeared in 1 skill (`apex-methodology`) and was **not** preserved — see below.
 

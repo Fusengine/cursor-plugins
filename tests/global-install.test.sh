@@ -45,7 +45,7 @@ const fs = require('fs');
 const path = require('path');
 const [marketFile, localRoot] = process.argv.slice(2);
 const market = JSON.parse(fs.readFileSync(marketFile, 'utf8'));
-if (market.plugins.length !== 24) throw Error('expected 24 source plugins');
+if (market.plugins.length !== 25) throw Error('expected 25 source plugins');
 for (const entry of market.plugins) {
   const root = path.join(localRoot, entry.name);
   if (!fs.statSync(root).isDirectory()) throw Error(`missing immediate plugin: ${entry.name}`);

@@ -5,45 +5,37 @@ alwaysApply: true
 
 ## Agent Teams
 
-**Lead = Coordinator ONLY.** Never codes, only orchestrates — except: After 2 failed delegations on a localised, already-measured defect, the lead reads and fixes it itself (the only case where the lead edits).
-**Procedure from owner request to verified report → skill `fuse-ai-pilot:lead-orchestration`** (intake, route, brief, follow, blocks, verify, learn, report).
-**ALWAYS DELEGATE** — every edit, even one line (skills, rules, templates), goes to an agent; the lead orchestrates and verifies. Exception: After 2 failed delegations on a localised, already-measured defect, the lead reads and fixes it itself (the only case where the lead edits).
-**Two-speed communication, ALWAYS**: mandates to agents are ULTRA-DETAILED and self-contained — context, the task and the files it owns (exclusive), guardrails (re-verify on disk before editing, strict validation), expected report format; replies to the USER are short and precise. Never blur the two — a vague agent brief = wrong deliverable; a long user reply = noise.
+The lead follows the `AGENTS.md` COORDINATOR PATH (detail: skill `fuse-ai-pilot:lead-orchestration`) and executes nothing itself (`AGENTS.md` RECURRING TRAPS "Total delegation"). This rule holds the team mechanics behind steps 3-10.
 
-1. **One agent per task** - the split unit is the TASK; each task has one agent and owns the files it needs. NEVER shared edits between teammates — two tasks that must edit the same file are merged into one task or sequenced
-2. **Well-scoped mandates** - Each brief states: the task, the files it owns (exclusive), expected output, acceptance criteria
-3. **Completion is reported, not assumed** - a subagent returns its final report to the lead (a background one writes its output under `~/.cursor/subagents/`); the lead still verifies ON DISK (rule 7). There is no task board to tick
-4. **Max 4 teammates** - Beyond = coordination overhead
-5. **80% planning, 20% execution** - Detailed specs = better results
-6. **SPLIT by task by default** — several tasks = one agent per task, launched as parallel Task calls in ONE message; announce the split, don't ask
-7. **Launch → Orchestrate → Monitor → VERIFY** - spawning is step 1, not the job: after EACH agent report, verify the deliverables ON DISK (grep/diff the expected changes) before considering the mandate done. External executors (Kimi/Codex/Claude Code) included: poll their output, push them on stalls, follow them to the end — the owner never has to ask "is it moving?"
-8. **Idle ≠ done** - a returned or idle subagent is NOT a completion; no deliverable on disk → take the mandate back or re-delegate, never assume
-9. **Re-dispatch clause in every brief** - "if you receive a re-dispatch of an already-delivered mandate, verify the disk and REFUSE to re-execute" (without it, work gets double-applied)
-10. **sniper AFTER all teammates finish** - never during; run it once, after every teammate's deliverable is verified on disk
-11. **Owner correction → rule, same turn** - every correction becomes a line in the skill/agent that failed (source repo, then synced) before the turn ends; the owner never says the same thing twice
+### Lead conduct
+- **Two-speed communication.** Briefs to agents are complete and self-contained; replies to the owner are short (`AGENTS.md` AUTONOMY "Replies"). A vague brief = wrong deliverable; a long reply = noise.
+- **The lead reads only to verify.** Read/Grep/`ls`/logs are allowed to check deliverables and state (disk, mtimes, logs, git read-only), never to do the analysis itself — analysis goes to the Analyze trio. In the `AGENTS.md` sole edit exception (2 failed delegations, both cited with proof), the lead reads the file before editing it (`00-critical-rules`).
+- **80% planning, 20% execution.** Detailed specs give better results.
+- Owner correction → rule: `AGENTS.md` AUTONOMY.
 
-## Scope Ladder — take the smallest tool that suffices
+### Analyze (PATH 3)
+Whenever code is touched, launch all three in one message (parallel Task tool calls), never sequentially:
+- Task `subagent_type` `fuse-ai-pilot:explore-codebase` — architecture + file structure
+- Task `subagent_type` `fuse-ai-pilot:research-expert` — documentation + best practices
+- Task `subagent_type` `[domain-expert]` — per `01-project-detection`
+Read-only question → `explore-codebase` alone. Trivial 1-3 line change → `apex-quick`, one agent (`02-apex-workflow`).
 
-Pick the level by the WORK, not by reflex. The rules above (team min 4, mandatory ANALYZE trio for anything touching code) still hold — this ladder tells you WHEN each applies and WHY, so you neither over-apply (a 4-agent team + ANALYZE trio for a mid-size edit) nor under-apply.
+### Decompose and distribute (PATH 4-5)
+1. **One agent per task.** The split unit is the task (one verifiable deliverable); each task has one named agent that owns its files exclusively. Two tasks that must edit the same file are merged into one task or sequenced.
+2. **Split by default and announce it**, don't ask. Several tasks of the same domain, even coupled, still get one agent each: the shared contract is stated in every brief, and a contract change is raised in the agent's report to the lead, who relays it by resuming the affected agent. Serializing several tasks onto one executor is a context bottleneck, not a safety measure.
+3. **At most 6 agents run concurrently** — beyond that, coordination overhead wins. More tasks → waves of up to 6; independent tasks of a wave run in parallel, coupled tasks in sequence. 6 is a ceiling, never a minimum.
+4. **Owner says "team"** → one named agent per task, up to 6 per wave, launched immediately, no debate.
+5. **Name every agent** in the brief's TEAM header and keep the agent ID returned by Task: it is how the lead resumes an agent. Teammates never spawn executors or teammates — only the lead splits the owner's request into tasks and names teammates; they may launch the four helpers `fuse-ai-pilot:research-expert`, `fuse-ai-pilot:explore-codebase`, `fuse-ai-pilot:challenger`, `fuse-ai-pilot:sniper` for their own task, within Cursor's nesting limit: a subagent launched by another subagent cannot launch further ones (https://cursor.com/docs/subagents), and hooks or tool policy can block spawning.
+6. **PARALLEL OWNERSHIP — NON-NEGOTIABLE.** One owner per folder (HARD STOP 4), never two agents on the same file; a shared resource (build, simulator, server) has one owner. When a collision happens anyway, do not pick one side wholesale: name one owner and order it to START FROM the on-disk state, preserving the other's contribution — never to rewrite from its own copy.
 
-| Scope | Action | Why |
-|-------|--------|-----|
-| Trivial / read-only / 1 targeted file, bounded change | 1 agent (the domain expert) + sniper — the lead never edits, even a one-line change. Read-only question → `explore-codebase` alone. NO team, NO mandatory ANALYZE trio. | Orchestration cost (spawn, briefs, FIFO cross-checks) exceeds the gain. |
-| Non-trivial, ONE task (mono-concern) | 1 domain-expert (+ targeted ANALYZE if it touches unknown code) + sniper/challenger. | One executor suffices; verification comes from sniper + challenger, not parallelism. |
-| Several tasks, SAME domain, even COUPLED | **One agent per task** — each task has one agent and owns the files it needs. Coupling is handled by the brief (shared contract stated up front), not by serializing every task onto one executor. Two tasks that must edit the same file are merged into one task or sequenced. Announce the split, don't ask. | Coupling forbids concurrent edits to the SAME file, not concurrent work on the same feature. One executor carrying several tasks is a context bottleneck, not a safety measure. |
-| Truly parallelizable: INDEPENDENT tasks, multi-domain, or large work with no cross-dependency | **Team of subagents, MINIMUM 4 in parallel**, NEVER 1 (1 agent = not a team). Announce the split, don't ask. | Parallelism only pays when the tasks have no dependency between them. |
-| User says "team" / "create a team" | **Spawn immediately** — min 4, no debate. | Owner's explicit call overrides the ladder. |
+### Brief (PATH 6)
+7. **EVERY BRIEF USES THE FIXED HEADERS**: OWNER RULES (the owner's words, verbatim) / WRITE (task + exclusive files) / OUTPUT (expected deliverable and paths) / TOOLS / PROOF (acceptance criteria + proof command) / NON-GOALS / TEAM (names, owned files; reports go to the lead through the final result) / LANGUAGE / REPORT (format). Guardrails inside: re-verify the disk before editing, strict validation. Template: skill `lead-orchestration` → `references/brief-template.md`.
+8. **Re-dispatch clause in every brief**: "if you receive a re-dispatch of an already-delivered mandate, verify the disk and refuse to re-execute" (`AGENTS.md` "Agents communicate").
+9. **NO DESTRUCTIVE ACTION INSIDE A BRIEF.** An in-flight agent cannot be reliably countermanded (a message only reaches it when it is resumed; the original brief executes anyway). A contestable deletion or overwrite is proposed to the owner; after the owner validates it, a dedicated agent executes it. The lead never executes it itself.
+10. Writing to a deployed path or an installed copy → never, unless the owner names it (`AGENTS.md` HARD STOP 3; `06-tooling-rules`).
 
-**Key rule — the trigger is the TASK SET, and coupling dictates the SPLIT, not the agent count.** One task = one agent; several tasks = one agent per task; independent tasks = full team (min 4). Conflict guard (a consequence, not the split criterion): never two agents on the same file. When the owner says "team", it's a team (min 4), no debate.
-
-**Nesting limit (Cursor docs):** a subagent can launch child subagents, but a subagent launched by another subagent cannot launch further ones, and hooks or tool policy can block spawning — only the lead splits the work.
-
-**Parallel ownership — non-negotiable when several agents run at once.** One agent per task, each task owning the files it needs; one owner per folder, never two agents on the same file (two tasks on one file → merge or sequence them). When a collision happens anyway, do not pick one side wholesale: each side usually holds something the other lacks. Name one owner AND order it to START FROM the on-disk state, preserving the other's contribution — never to rewrite from its own copy.
-
-## Anti-Patterns (FORBIDDEN)
-- **Sequential launches for parallel tasks** → launch the independent subagents as parallel Task calls in ONE message
-- **2 teammates on same file** → CONFLICT guaranteed (one overwrites the other) — merge the two tasks or sequence them
-- **Lead writing code** → Lead ORCHESTRATES only (Task tool to delegate; resume a subagent by its agent ID to steer it) — except: After 2 failed delegations on a localised, already-measured defect, the lead reads and fixes it itself (the only case where the lead edits)
-- **Serializing several tasks onto one executor** → SPLIT one agent per task and announce it; asking permission for every split is its own anti-pattern
-- **Writing to deployed dir** → ALWAYS work in dev repo, rsync after
-- **Destructive action inside an agent brief** → FORBIDDEN. An in-flight agent cannot be reliably countermanded (a message only reaches it when it is resumed — the original brief executes anyway). Any contestable deletion/overwrite = done by the lead AFTER user validation, never delegated in a brief
+### Follow, verify, control (PATH 8-10)
+11. **Completion is reported, not assumed.** A subagent returns its final report to the lead (a background one writes its output under `~/.cursor/subagents/`): done / proof / not verified / files touched, and a block is reported at once (`AGENTS.md` "Agents communicate"). There is no task board; a returned subagent is never the completion signal by itself.
+12. **LAUNCH → FOLLOW → VERIFY ON DISK.** Spawning is step 1, not the job: after each report, grep/diff the expected changes on disk before counting the task done. A silent agent gets looked at, not waited on. External executors (Kimi/Codex/Claude Code) included: poll their output, push them on stalls, follow them to the end — the owner never has to ask "is it moving?"
+13. **IDLE ≠ DONE.** A returned or idle subagent is not a completion; no deliverable on disk → take the mandate back or re-delegate, never assume.
+14. **sniper once, after every agent has finished** and its deliverable is verified on disk, never during; then the challenger before any "done" (`00-critical-rules` rules 4-5).

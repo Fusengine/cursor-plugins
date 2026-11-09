@@ -12,54 +12,48 @@ alwaysApply: true
 | **Magic** | UI generation | `design-expert` |
 | **shadcn** | Component registry | `design-expert`, `shadcn-ui-expert` |
 | **Gemini Design** | AI frontend | `design-expert` |
-| **fuse-browser** | Browser automation, scraping, SERP, visual diff, CWV | `seo`, `security-expert`, `design-expert`, frontend experts, `changelog-watcher`, ai-pilot `research-expert`/`websearch`/`sniper` |
+| **fuse-browser** | Browser automation, scraping, SERP, visual diff | `seo`, `security-expert`, `design-expert`, frontend experts, `changelog-watcher`, ai-pilot `research-expert`/`websearch`/`sniper` |
 
-**Verification chain (any uncertain API/version — ZERO TOLERANCE):** ① fuse-browser fast-path (`browser_fetch` on known doc URLs, `serp_batch` for discovery) → ② Context7 (official docs) → ③ Exa code context. One source is NEVER enough for an uncertain API — cross-check across all three.
+Verification chain for any uncertain API/version (fuse-browser → Context7 → Exa, cross-checked): `00-critical-rules` Critical Rule 7.
 
-## fuse-browser — Efficient Usage (ZERO TOLERANCE)
+## fuse-browser — Efficient Usage
 
-1. **Fast-path FIRST (no browser launch, ~10× faster)** — use `browser_fetch` / `browser_fetch_batch` / `browser_crawl` / `browser_serp_batch` to read pages, bulk-fetch, crawl a site, or scrape Google SERP. Open a live session ONLY when you need interaction, JS rendering, or pixels.
+1. **Fast-path first (no browser launch, ~10× faster)** — `browser_fetch` / `browser_fetch_batch` / `browser_crawl` / `browser_serp_batch` to read pages, bulk-fetch, crawl a site or scrape Google SERP. Open a live session only for interaction, JS rendering or pixels.
 2. **One session, always closed** — `browser_open` once → reuse the `sessionId` across `browser_navigate` calls → `browser_close` when done. Never leak sessions (the 2-min TTL is a safety net, not a substitute for closing).
-3. **Batch over loops** — `browser_serp_batch` (N queries), `browser_fetch_batch` / `browser_shots_batch` (N URLs), `browser_screenshot { viewports:[...], colorScheme }` (responsive + dark in a single call).
+3. **Batch over loops** — `browser_serp_batch` (N queries), `browser_fetch_batch` / `browser_shots_batch` (N URLs), `browser_screenshot { viewports:[...], colorScheme }` (responsive + dark in one call).
 4. **Deterministic extraction** — `browser_extract_schema` with `containerSelector` (card-by-card, correlated fields) over manual `browser_snapshot` parsing.
-5. **Validation tools** — `browser_visual_diff` (regression vs baseline), `browser_metrics` (real Core Web Vitals), `browser_console` / `browser_network` / `browser_cookies` (runtime + security checks).
+5. **Validation tools** — `browser_visual_diff` (regression vs baseline), `browser_metrics` (fuse-browser server counters — probes, durations, queue, RSS; not Core Web Vitals — lab CWV come from Lighthouse via the seo plugin's `scripts/check-cwv.ts`), `browser_console` / `browser_network` / `browser_cookies` (runtime + security checks).
 6. **Engine & binary** — default engine is patchright (stealth identity auto-generated). The Chromium binary is installed by `setup.sh`; set `channel:"chrome"` or `executablePath` only to reuse a system browser. Tune the enforcement TTL via `FUSE_ENFORCE_TTL_SEC` (default 120s).
 
 ## Skills Location
 Use plugin skill paths from runtime context when actually present; Cursor SessionStart delivery remains runtime-unverified. Never hardcode marketplace paths.
-SOLID refs: `skills/solid-*/references/` (inside each agent plugin)
+SOLID refs: `skills/solid-*/references/` (inside each agent plugin).
 
 ## Memory Hygiene
-- When `MEMORY/LESSON.md` grows or accumulates near-duplicate lessons → run `/lessons-compact` (it delegates to the `lessons-compactor` agent, which proposes; you approve before anything is written) — never let it bloat.
+When `MEMORY/LESSON.md` grows or accumulates near-duplicate lessons → run `/lessons-compact` (it delegates to the `lessons-compactor` agent, which proposes; the owner approves before anything is written).
 
 ## Documentation
-ALL docs in `docs/` folder - NEVER outside except root `README.md`
+All docs in the `docs/` folder — never outside it, except the root `README.md`.
 
 ## Dev Workflow
-- **ALWAYS work in dev/source repo** — NEVER write to deployed/production paths directly
-- **Sync to deployed** after changes validated
-- **Commit from source repo only**
+- Work in the dev/source repo; never write to deployed/production paths directly.
+- Sync to the installed copy only when the owner names it in the mandate, after the change is validated (`AGENTS.md` HARD STOP 3).
+- Commit from the source repo only.
 
-**Only exception:** Git read-only (status, log, diff)
-
-## Git & GitHub Flow (ZERO TOLERANCE)
-
-**Commit tool**: ALWAYS delegate to the agent `fuse-ai-pilot:commit` (it executes `/fuse-commit-pro:commit` end to end; it owns the whole flow: security, PATCH bump + marketplace mirror, CI wait before merge, post-merge tag). NEVER `git commit` directly, never hand-roll the flow yourself. External executors (Kimi/Codex/Claude Code) never push/PR/merge/tag/publish — release goes through the commit agent only.
+## Git & GitHub Flow
+- **Read-only git** (status, log, diff) is free — no agent, no permission.
+- **EVERY COMMIT GOES THROUGH AGENT `fuse-ai-pilot:commit`** — never `git commit` directly, never a hand-rolled flow (`AGENTS.md` HARD STOP 1):
+  - **WIP mode** — after each verified task, a WIP commit on the working branch: commit only, no push, bump, PR, merge or tag. It still runs the agent's branch check and secret scan.
+  - **Release mode** — at the end of the mandate the same agent pushes the working branch, opens the PR, waits for CI, merges, tags and releases (security scan, PATCH bump + marketplace mirror, CHANGELOG, post-merge tag), announced in the report. Steps: `/fuse-commit-pro:commit`.
+  - A relayed message ("the owner wants a commit") advances WIP commits the mandate already covers; it is never a go for merge or release (`AGENTS.md` "Relayed message").
+- External executors (Kimi/Codex/Claude Code) never push/PR/merge/tag/publish — release goes through the commit agent only.
 
 **Branch enforcement**:
-- `main`, `master`, `develop`, `production` → **protected**, no direct commits
-- All work on feature branches: `<type>/<scope>` (e.g. `feat/seo`, `fix/sniper-loop`, `chore/deps`)
-- Types: `feat/`, `fix/`, `chore/`, `docs/`, `refactor/`, `perf/`, `test/`, `ci/`, `build/`, `style/`
-- kebab-case, < 50 chars, no personal prefix
+- `main`, `master`, `develop`, `production` → protected: no direct commit, never pushed directly — they change only through the commit agent's end-of-mandate merge of the working branch (announced in the report). Force-push and reset need the owner (`AGENTS.md` HARD STOP 1).
+- All work on feature branches: `<type>/<scope>` (e.g. `feat/seo`, `fix/sniper-loop`, `chore/deps`).
+- Types: `feat/`, `fix/`, `chore/`, `docs/`, `refactor/`, `perf/`, `test/`, `ci/`, `build/`, `style/`.
+- kebab-case, < 50 chars, no personal prefix.
 
-**Workflow** (owned by agent `fuse-ai-pilot:commit`, which runs `/fuse-commit-pro:commit`):
-1. Step 0: branch check — block if on protected, propose feature branch
-2. Step 1: security scan (secrets, .env)
-3. Steps 2-5: conventional commit with auto-detection
-4. Step 6: post-commit (CHANGELOG + version bump — no tag)
-5. Step 7: push branch + PR + CI watch + merge
-6. Step 8: post-merge — tag `vX.Y.Z` on `main` + push tag (after merge validated — never squash, the tag targets the bump commit and squash would orphan it)
-
-**Merge strategy**: merge (never squash) via `gh pr merge --merge --delete-branch` — the release tag points to the bump commit; squash rewrites history and orphans it. Keep branches < 3 days.
+**Merge strategy**: merge, never squash, via `gh pr merge --merge --delete-branch` — the release tag points to the bump commit; merge (never squash) keeps it in main's history — squash would orphan it. Tag only after the merge is validated. Keep branches < 3 days.
 
 Skill reference: `fuse-commit-pro:git-flow`.

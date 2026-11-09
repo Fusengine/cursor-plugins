@@ -1,13 +1,13 @@
 ---
 name: 03-plan-component
-description: Plan component implementation with TaskCreate
+description: Plan component implementation with a task list
 prev_step: references/design/02-search-inspiration.md
 next_step: references/design/04-code-component.md
 ---
 
 # 03 - Plan Component (APEX Phase P)
 
-**Plan implementation using TaskCreate before coding.**
+**Plan implementation using a task list before coding.**
 
 ## When to Use
 
@@ -17,12 +17,12 @@ next_step: references/design/04-code-component.md
 
 ---
 
-## TaskCreate Structure
+## Task List Structure
 
 ### Example: Hero Section
 
 ```text
-TaskCreate for each step:
+List each step:
 1. [ ] Create HeroSection component shell
 2. [ ] Add typography (heading, subheading)
 3. [ ] Implement background (gradient orbs)
@@ -30,13 +30,13 @@ TaskCreate for each step:
 5. [ ] Implement Framer Motion animations
 6. [ ] Add responsive styles
 7. [ ] Validate accessibility
-Use addBlockedBy to set dependencies. TaskUpdate to track progress.
+State dependencies in the plan; track progress in your REPORT.
 ```
 
 ### Example: Card Component
 
 ```text
-TaskCreate for each step:
+List each step:
 1. [ ] Create Card base component
 2. [ ] Add CardHeader, CardContent, CardFooter
 3. [ ] Implement hover animation
@@ -99,7 +99,7 @@ If the component approaches `FUSE_SOLID_MAX_LINES` or accumulates multiple respo
 ## Validation Checklist
 
 ```text
-[ ] TaskCreate plan created
+[ ] Task list written in the plan / REPORT
 [ ] Tasks are atomic
 [ ] File sizes estimated within `FUSE_SOLID_MAX_LINES` (default `200`)
 [ ] Design tokens documented

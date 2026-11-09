@@ -204,6 +204,32 @@
       "category": "development"
     },
     {
+      "name": "fuse-hermes",
+      "source": ".cursor-plugin/plugins/fuse-hermes",
+      "description": "Expert Nous Research Hermes Agent 0.23+ — config.yaml, SOUL.md / .hermes.md, profiles, delegation, cron, gateways, security, plus chief-of-staff operating patterns driven by a universal profile.yaml",
+      "version": "1.0.0",
+      "author": {
+        "name": "Fusengine",
+        "email": "hello@fusengine.ch"
+      },
+      "homepage": "https://github.com/fusengine/agents",
+      "repository": "https://github.com/fusengine/agents",
+      "license": "MIT",
+      "keywords": [
+        "hermes",
+        "hermes-agent",
+        "nous-research",
+        "ai-agent",
+        "delegation",
+        "cron",
+        "gateway",
+        "chief-of-staff",
+        "assistant",
+        "automation"
+      ],
+      "category": "development"
+    },
+    {
       "name": "fuse-laravel",
       "source": ".cursor-plugin/plugins/fuse-laravel",
       "description": "Expert Laravel 13 + PHP 8.3+ with SOLID principles, first-class PHP Attributes, Laravel AI SDK, JSON:API Resources, native vector search (pgvector), Eloquent, Livewire, queues with routing, and comprehensive documentation",

@@ -2,7 +2,7 @@
 name: nextjs-shadcn
 description: Use when building UI components in Next.js App Router with shadcn/ui — forms, dialogs, tables, toasts, accessible components.
 versions:
-  shadcn-ui: 4.21.0
+  shadcn-ui: 4.23.0
   nextjs: 16
   tailwindcss: 4
 user-invocable: true
@@ -11,7 +11,7 @@ related-skills: nextjs-16, nextjs-tanstack-form, tailwindcss-core, solid-nextjs
 ---
 
 <objective>
-Builds UI components for Next.js App Router with shadcn/ui (CLI 4.21.0) and Tailwind CSS v4 on whichever component base the project uses — Base UI (default for new projects since July 2026), Radix UI (unified `radix-ui` package, fully supported) or React Aria (added July 2026): forms (Field/FieldLabel/FieldError pattern with TanStack Form, never React Hook Form), overlays (Dialog, Sheet, Drawer, Popover, Tooltip), feedback (Alert, Toast on Base UI / Sonner on Radix and Aria, Progress, Skeleton), data display (Table, Badge, Calendar, Chart), and navigation (Sidebar, Command, DropdownMenu).
+Builds UI components for Next.js App Router with shadcn/ui (CLI 4.23.0) and Tailwind CSS v4 on whichever component base the project uses — Base UI (default for new projects since July 2026), Radix UI (unified `radix-ui` package, fully supported) or React Aria (added July 2026): forms (Field/FieldLabel/FieldError pattern with TanStack Form, never React Hook Form), overlays (Dialog, Sheet, Drawer, Popover, Tooltip), feedback (Alert, Toast on Base UI / Sonner on Radix and Aria, Progress, Skeleton), data display (Table, Badge, Calendar, Chart), and navigation (Sidebar, Command, DropdownMenu).
 
 Requires detecting the base from `components.json` before writing any component code, installing components via `bunx --bun shadcn@latest add` (never hand-written) to `@/modules/cores/shadcn/components/ui/`, and covers MCP registry tools (`mcp__shadcn__*`) for discovering components before implementing. This is the Next.js App Router variant of shadcn/ui — for a plain React/Vite app see react-shadcn instead.
 </objective>

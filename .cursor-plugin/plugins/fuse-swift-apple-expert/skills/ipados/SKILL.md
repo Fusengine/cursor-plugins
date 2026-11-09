@@ -2,7 +2,7 @@
 name: ipados
 description: Use when building iPad apps — split views, external keyboard support, multitasking, or Stage Manager — adaptive layouts.
 versions:
-  ipados: 27
+  ipados: 27.2
 user-invocable: false
 references: references/adaptive-layouts.md, references/keyboard-shortcuts.md, references/multitasking.md
 related-skills: swift-core, swiftui-core, ios, mcp-tools
@@ -25,7 +25,7 @@ iPadOS-specific development for tablet and productivity experiences.
 Before ANY implementation, delegate via `Task` — spawn 3 agents in parallel (single message, 3 `Task` calls):
 
 1. **fuse-ai-pilot:explore-codebase** - Analyze existing iPad patterns
-2. **fuse-ai-pilot:research-expert** - Verify latest iPadOS 27 docs via Context7/Exa
+2. **fuse-ai-pilot:research-expert** - Verify latest iPadOS 27.2 docs via Context7/Exa
 3. **mcp__apple-docs__search_apple_docs** - Check iPad multitasking patterns
 
 After implementation, run **fuse-ai-pilot:sniper** for validation.
@@ -71,4 +71,4 @@ After implementation, run **fuse-ai-pilot:sniper** for validation.
 3. **Drag and drop** - Enable data transfer
 4. **Pointer support** - Mouse/trackpad cursors
 5. **Multi-window** - Support multiple instances
-6. **External display** - UIScreen support
+6. **External display** - UIScreen support; with the 27 SDK non-interactive external scenes are no longer offered automatically: register `UISceneAccessory.externalNonInteractive` (UIKit) or use `.sceneAccessory` (SwiftUI). UIKit apps need the scene-based life cycle (`swift-core/references/sdk-27-changes.md`)

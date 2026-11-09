@@ -12,7 +12,7 @@ next_step: references/03.5-elicit.md
 ## When to Use
 
 - After plan is complete and approved
-- Follow TaskCreate task order
+- Follow the task order of the plan
 - Update progress as you go
 
 ---
@@ -132,7 +132,7 @@ Description: imperative mood, <50 chars
 
 ### Examples
 
-```bash
+```text
 feat(auth): add login validation
 refactor(api): extract fetch utilities
 test(auth): add login component tests
@@ -142,14 +142,14 @@ test(auth): add login component tests
 
 ## Progress Tracking
 
-### Update tasks via TaskUpdate
+### Update task status in your REPORT
 
 ```text
 After each task:
-1. Mark task as completed (TaskUpdate status: completed)
+1. Mark task as completed (state the status in your REPORT)
 2. Note any deviations
 3. Update estimates if needed
-4. Flag blockers immediately (addBlockedBy)
+4. Flag blockers immediately (in your REPORT)
 ```
 
 ---
@@ -202,20 +202,15 @@ If you encounter:
 □ Existing patterns followed
 □ No duplicate utilities
 □ Atomic commits made
-□ Tasks updated via TaskUpdate
+□ Task status stated in your REPORT
 □ Local testing passed
 ```
 
 ---
 
-## Update Task Phase
+## Task Phase
 
-At the **start** of this phase, record it in `.cursor/apex/task.json`:
-
-```bash
-jq --arg p "execution" '.tasks[.current_task].phase = $p' .cursor/apex/task.json \
-  > .cursor/apex/task.json.tmp && mv .cursor/apex/task.json.tmp .cursor/apex/task.json
-```
+Phase: `execution`. Do not create or write `.cursor/apex/task.json`: on Cursor no tool syncs it (the harness task sync is Claude-only). State the phase in your REPORT; tracking lives in the agents' REPORTs and `docs/decisions.md`.
 
 ---
 

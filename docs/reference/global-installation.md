@@ -13,7 +13,7 @@ marketplace entry as an individual immediate child:
 ```
 
 It does not copy or link the multi-plugin marketplace root as one child. The source marketplace
-stores all 24 plugin roots under `.cursor-plugin/plugins/`; each manifest source must match that
+stores all 25 plugin roots under `.cursor-plugin/plugins/`; each manifest source must match that
 deterministic nested path and each installed target remains the flat plugin name.
 
 Cursor's cone-sparse marketplace checkout always materializes `.cursor-plugin/`. The same subtree

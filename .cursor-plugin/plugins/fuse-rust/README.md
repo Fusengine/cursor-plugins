@@ -1,7 +1,7 @@
 # fuse-rust (Cursor Plugin)
 
 Expert **safe, idiomatic Rust** development — libraries, CLI tools, async services, and web
-backends. Targets Rust 1.98+ on the **2024 edition**, with an ownership-first mindset,
+backends. Targets Rust 1.99+ on the **2024 edition**, with an ownership-first mindset,
 `clippy`-clean code, and SOLID principles.
 
 Ported from the Claude Code plugin `fuse-rust` v1.0.9 (source folder `plugins/rust-expert`). The

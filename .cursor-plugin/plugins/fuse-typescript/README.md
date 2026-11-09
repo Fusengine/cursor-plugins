@@ -1,8 +1,8 @@
 # fuse-typescript (Cursor Plugin)
 
 Expert **pure TypeScript** development — CLI tools, libraries, scripts, and backends with no UI
-framework. Targets TypeScript 7.0 (native Go compiler) on Node 24 LTS ("Krypton"; Node 26 enters
-LTS on 2026-10-28) or Bun 1.4, with strict typing,
+framework. Targets TypeScript 7.0 (native Go compiler) on Node 26 LTS ("Lithium", Active LTS since 2026-10-28;
+Node 24 "Krypton" is Maintenance LTS) or Bun 1.4, with strict typing,
 ESM-first packaging, and SOLID principles.
 
 Ported from the Claude Code plugin `fuse-typescript` v1.0.4 (source folder
@@ -26,7 +26,7 @@ would be a divergence, not a precaution (R4–R6 / R8–R10 preamble).
 | :-- | :-- |
 | `ts-config` | `tsconfig.json`, compiler options, module resolution, TS 7.0 hard errors (6.0 deprecations) |
 | `ts-language-patterns` | Type-level patterns — generics, discriminated unions, `satisfies`, const objects |
-| `ts-runtime-node` | Node 24 LTS runtime — native type stripping, ESM, `node:` built-ins |
+| `ts-runtime-node` | Node 26 / 24 LTS runtime — native type stripping, ESM, `node:` built-ins |
 | `ts-runtime-bun` | Bun 1.4 runtime — `Bun.*` APIs, native TS execution, bundler, test runner |
 | `ts-lint-format` | Linting and formatting — ESLint flat config, Biome |
 | `ts-testing` | Testing — `node:test`, `bun test`, Vitest, coverage |

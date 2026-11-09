@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": "./scripts/hook.sh",
+        "matcher": "Write"
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": "./scripts/hook.sh"
+      }
+    ]
+  }
+}

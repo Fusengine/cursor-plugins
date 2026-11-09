@@ -134,9 +134,12 @@ Long-lived branches = merge hell
 ### Sync Frequently
 
 ```bash
+# Check how far the branch is behind main (read-only)
 git fetch origin main
-git rebase origin/main
+git log --oneline HEAD..origin/main
 ```
+
+Branch out of date with main → the commit agent's flow handles it (`fuse-ai-pilot:commit`, full mode, end of mandate); never rebase and force-push a shared branch yourself (force-push needs the owner).
 
 ---
 
@@ -154,17 +157,9 @@ git rebase origin/main
 
 ---
 
-## Update Task Phase
+## Task Phase
 
-At the **start** of this phase, record it (and the resolved task subject) in `.cursor/apex/task.json`:
-
-```bash
-jq --arg p "init-branch" --arg s "$TASK_SUBJECT" \
-  '.tasks[.current_task].phase = $p | .tasks[.current_task].subject = $s' \
-  .cursor/apex/task.json > .cursor/apex/task.json.tmp && mv .cursor/apex/task.json.tmp .cursor/apex/task.json
-```
-
-Replace `$TASK_SUBJECT` with the real task description, quoted for the shell.
+Phase: `init-branch`. Do not create or write `.cursor/apex/task.json`: on Cursor no tool syncs it (the harness task sync is Claude-only). State the phase in your REPORT; tracking lives in the agents' REPORTs and `docs/decisions.md`.
 
 ---
 

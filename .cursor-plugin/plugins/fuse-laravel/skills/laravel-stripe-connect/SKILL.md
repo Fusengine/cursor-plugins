@@ -3,7 +3,7 @@ name: laravel-stripe-connect
 description: Use when implementing multi-vendor marketplace payments, seller onboarding, commissions, payouts, or split payments with Stripe Connect.
 versions:
   laravel: "13.0"
-  stripe-php: "21.x"
+  stripe-php: "22.x"
   php: "8.3"
 user-invocable: true
 references: references/overview.md, references/account-types.md, references/payment-flows.md, references/onboarding.md, references/fees-commissions.md, references/payouts.md, references/refunds-disputes.md, references/compliance.md, references/templates/Seller.php.md, references/templates/SellerOnboardingController.php.md, references/templates/MarketplacePaymentController.php.md, references/templates/PayoutController.php.md, references/templates/ConnectWebhookHandler.php.md, references/templates/ConnectRoutes.php.md
@@ -238,7 +238,7 @@ $needsInfo = !empty($account->requirements->currently_due);
 
 ## Laravel 13 Notes
 
-Stripe Connect (`stripe/stripe-php` 21.x, current 21.3) is **Laravel 13 compatible**; the static methods used here (`\Stripe\Account::create()`, `AccountLink::create()`) still exist. Adjustments:
+Stripe Connect (`stripe/stripe-php` 22.x, current 22.1) is **Laravel 13 compatible**; the static methods used here (`\Stripe\Account::create()`, `AccountLink::create()`) still exist. Adjustments:
 
 - Connect webhook: exclude `connect/webhook` from `PreventRequestForgery` (see [[laravel-auth]])
 - `account.updated` handler: use `Context::add('stripe_account', $accountId)` to propagate into the queue

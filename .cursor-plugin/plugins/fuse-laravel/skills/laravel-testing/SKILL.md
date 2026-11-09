@@ -3,8 +3,8 @@ name: laravel-testing
 description: Use when testing controllers, services, or models, or implementing TDD on Laravel 13 with Pest 5 / PHPUnit 13 (or Pest 4 / PHPUnit 12 on PHP 8.3).
 versions:
   laravel: "13.0"
-  pest: "5.2"
-  phpunit: "13.3"
+  pest: "5.3"
+  phpunit: "13.4"
   php: "8.3"
 user-invocable: false
 references: references/pest-basics.md, references/pest-datasets.md, references/pest-arch.md, references/http-requests.md, references/http-json.md, references/http-auth.md, references/http-assertions.md, references/database-basics.md, references/database-factories.md, references/database-assertions.md, references/mocking-services.md, references/mocking-fakes.md, references/mocking-http.md, references/console-tests.md, references/troubleshooting.md, references/templates/FeatureTest.php.md, references/templates/UnitTest.php.md, references/templates/ArchTest.php.md, references/templates/ApiTest.php.md, references/templates/PestConfig.php.md

@@ -3,7 +3,7 @@ name: laravel-permission
 description: Use when implementing RBAC, role-based access control, or user authorization with Spatie Laravel Permission.
 versions:
   laravel: "13.0"
-  spatie-permission: "8.3"
+  spatie-permission: "8.5"
   php: "8.3"
 user-invocable: false
 references: references/spatie-permission.md, references/middleware.md, references/blade-directives.md, references/teams.md, references/wildcard-permissions.md, references/super-admin.md, references/cache.md, references/direct-permissions.md, references/artisan-commands.md, references/custom-models.md, references/events.md, references/query-scopes.md, references/policies.md, references/api-usage.md, references/testing.md, references/performance.md
@@ -252,7 +252,7 @@ beforeEach(fn () => app(PermissionRegistrar::class)->forgetCachedPermissions());
 
 ## Laravel 13 Notes
 
-Spatie Permission **8.x** (current 8.3, requires PHP 8.3+ and Laravel 12/13) is **Laravel 13 compatible**. L13 integrations:
+Spatie Permission **8.x** (current 8.5, requires PHP 8.3+ and Laravel 12/13) is **Laravel 13 compatible**. L13 integrations:
 
 - **Upgrade v6 → v7 → v8**: event classes suffixed `Event` (`RoleAttachedEvent`…), commands suffixed `Command`, `clearClassPermissions()` removed, `findByName()` / `findOrCreate()` accept `BackedEnum|string` (v8) — see [events.md](references/events.md)
 - **Cache**: the `permission.cache.key` key stays explicit (`spatie.permission.cache`) in `config/permission.php` → unaffected by L13's switch to hyphenated prefixes

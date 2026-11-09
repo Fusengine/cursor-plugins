@@ -2,8 +2,8 @@
 name: ts-testing
 description: Use when writing or configuring TypeScript tests and choosing between bun test and Vitest. Not for framework-specific testing (React → react-testing).
 versions:
-  bun: "1.4.2"
-  vitest: "5.0.2"
+  bun: "1.4.4"
+  vitest: "5.1.0"
 user-invocable: true
 references: references/choosing-runner.md, references/bun-test.md, references/vitest.md, references/common-patterns.md, references/templates/bun-setup.md, references/templates/vitest-setup.md
 related-skills: solid-generic, ts-packaging
