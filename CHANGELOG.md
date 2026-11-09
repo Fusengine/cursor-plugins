@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.10] - 09-11-2026
+
+- docs(ai-pilot): port the claude-plugins lead-corrections rules (49e2ea35) —
+  `lead-orchestration`: Owner's verb, Scope, "Everywhere", Migration / deploy,
+  Production data, Full gate before release; `brief-template`: owner's verb and
+  "Everywhere" lines; `verification`: After each deploy; `sniper`: Test review rules
+- chore(plugins): PATCH bump, mirrored in `.cursor-plugin/marketplace.json` —
+  fuse-ai-pilot 1.2.46
+- chore(marketplace): suite `metadata.version` 0.1.9 → 0.1.10, README version badge updated
+
 ## [0.1.9] - 09-11-2026
 
 - feat(port): port the claude-plugins coordinator workflow — COORDINATOR PATH
