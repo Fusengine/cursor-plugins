@@ -3,7 +3,7 @@ name: swiftui-core
 description: Use when building SwiftUI views, navigation, persistence, or state management, or checking UI against Apple HIG (accessibility, RTL, sheets/alerts, widgets, Live Activities, iPhone Duo) — shared across iOS, macOS, watchOS, visionOS.
 versions:
   swiftui: 6
-  ios: 27
+  ios: 27.2
 user-invocable: false
 references: references/views-modifiers.md, references/navigation.md, references/data-swiftdata.md, references/state-management.md, references/liquid-glass.md, references/app-intents.md, references/hig-accessibility.md, references/hig-rtl.md, references/hig-modality.md, references/hig-system-surfaces.md, references/hig-iphone-duo.md
 related-skills: swift-core, solid-swift, ios, macos, ipados, watchos, visionos, tvos

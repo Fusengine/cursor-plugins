@@ -86,14 +86,9 @@ final class ProfileViewModel {
 - [ ] Plan file splits if `FUSE_SOLID_MAX_LINES` would be exceeded
 - [ ] Identify localization keys
 
-## Update Task Phase
+## Task Phase
 
-At the **start** of this phase, record it in `.cursor/apex/task.json`:
-
-```bash
-jq --arg p "features-plan" '.tasks[.current_task].phase = $p' .cursor/apex/task.json \
-  > .cursor/apex/task.json.tmp && mv .cursor/apex/task.json.tmp .cursor/apex/task.json
-```
+Phase: `features-plan`. Do not create or write `.cursor/apex/task.json`: on Cursor no tool syncs it (the harness task sync is Claude-only). State the phase in your REPORT; tracking lives in the agents' REPORTs and `docs/decisions.md`.
 
 ## Next Phase
 

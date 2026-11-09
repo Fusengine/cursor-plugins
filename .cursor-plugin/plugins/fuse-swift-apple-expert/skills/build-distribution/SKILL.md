@@ -2,7 +2,7 @@
 name: build-distribution
 description: Use when preparing an Apple release — code signing, TestFlight upload, App Store submission, or app icons/CI across all platforms.
 versions:
-  xcode: 27
+  xcode: 27.2
 user-invocable: false
 references: references/code-signing.md, references/testflight.md, references/app-store.md, references/app-icons.md, references/storekit2.md
 related-skills: swift-core, ios, macos, mcp-tools

@@ -25,7 +25,7 @@ esac
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 LOCAL_DIR="$HOME/.cursor/plugins/local"
 MARKETPLACE="$ROOT/.cursor-plugin/marketplace.json"
-EXPECTED_PLUGINS=24
+EXPECTED_PLUGINS=25
 SOLID_MAX_LINES="${FUSE_SOLID_MAX_LINES:-200}"
 
 PASS_N=0
@@ -508,10 +508,10 @@ cat <<'CHECKLIST'
    gate, or its rules panel; they exist only inside the running editor. They are
    listed here so they are not mistaken for "verified".
 
-   [ ] 1. Do all 24 plugins appear in Customize?
+   [ ] 1. Do all 25 plugins appear in Customize?
           Where: Cursor Settings -> Plugins / Customize, after 'Developer: Reload Window'.
-          PASS:  the list shows 24 entries under "fusengine-plugins" (core-guards,
-                 fuse-ai-pilot ... fuse-typescript). 23 means one entry was rejected;
+          PASS:  the list shows 25 entries under "fusengine-plugins" (core-guards,
+                 fuse-ai-pilot ... fuse-typescript). 24 means one entry was rejected;
                  0 means the marketplace root was not loaded at all.
           If it fails: the JSON is provably well-formed (checks 1-6 above), so look at
           Help -> Toggle Developer Tools -> Console for the load error.

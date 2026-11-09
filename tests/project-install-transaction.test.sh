@@ -54,5 +54,5 @@ if HOME="$FAKE_HOME" NODE_ENV=test FUSE_INSTALL_TEST_FAIL_AFTER_PLUGIN=1 \
   exit 1
 fi
 test -f "$CRASHED/.cursor/fusengine/.managed-by-fusengine"
-test "$(cd "$CRASHED" && node .cursor/fusengine/load-plugins.mjs | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>process.exit(JSON.parse(s).pluginPaths.length===24?0:1))')" = ""
+test "$(cd "$CRASHED" && node .cursor/fusengine/load-plugins.mjs | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>process.exit(JSON.parse(s).pluginPaths.length===25?0:1))')" = ""
 printf 'PASS hard-crash recovery restores the sole owned backup before staging\n'

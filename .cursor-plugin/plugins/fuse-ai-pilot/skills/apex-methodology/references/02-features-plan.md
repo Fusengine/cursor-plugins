@@ -17,17 +17,17 @@ next_step: references/03-execution.md
 
 ---
 
-## TaskCreate Planning
+## Task-List Planning
 
 ### Create Task Breakdown
 
 ```text
-Use TaskCreate tool to create:
+List in the plan (and in your REPORT):
 1. Ordered list of implementation steps
 2. Each step is cohesive and reviewable
 3. Clear acceptance criteria
-4. Dependencies between tasks (addBlockedBy)
-Use TaskUpdate to track status (in_progress/completed).
+4. Dependencies between tasks (stated in the plan)
+State each task's status (in_progress/completed) in your REPORT.
 ```
 
 ### Task Structure
@@ -201,7 +201,7 @@ tests
 ## Validation Checklist
 
 ```text
-□ TaskCreate plan created
+□ Task list written in the plan / REPORT
 □ All tasks are cohesive and reviewable
 □ Interfaces planned FIRST
 □ File splits pre-planned
@@ -212,14 +212,9 @@ tests
 
 ---
 
-## Update Task Phase
+## Task Phase
 
-At the **start** of this phase, record it in `.cursor/apex/task.json`:
-
-```bash
-jq --arg p "features-plan" '.tasks[.current_task].phase = $p' .cursor/apex/task.json \
-  > .cursor/apex/task.json.tmp && mv .cursor/apex/task.json.tmp .cursor/apex/task.json
-```
+Phase: `features-plan`. Do not create or write `.cursor/apex/task.json`: on Cursor no tool syncs it (the harness task sync is Claude-only). State the phase in your REPORT; tracking lives in the agents' REPORTs and `docs/decisions.md`.
 
 ---
 

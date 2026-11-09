@@ -24,12 +24,12 @@ ALWAYS run 2 agents in parallel:
 ## P - Plan
 
 ```text
-ALWAYS use TaskCreate:
+ALWAYS list the tasks in the plan / REPORT:
 
 1. Break down into tasks
 2. Each task is cohesive and reviewable
 3. Plan file splits FIRST
-4. Map dependencies (addBlockedBy)
+4. Map dependencies
 ```
 
 ## E - Execute (with TDD)

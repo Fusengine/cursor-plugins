@@ -25,5 +25,4 @@ Scan: plugin agents using runtime-provided paths when actually present (Cursor S
 | **No match** | `general-purpose` |
 
 Priority: Custom > Framework (Next.js > Astro > Laravel > TanStack Start > React) > Language (TypeScript, PHP, Swift, Rust, Go) > UI library > `general-purpose`
-**FORBIDDEN:** `general-purpose` when domain agent exists.
-**RIGHT AGENT FOR EACH TASK** — route by Project Detection (domain-expert); never a generic agent when a domain expert exists.
+Right agent for each task: route by this table (`AGENTS.md` COORDINATOR PATH 5); never `general-purpose` or another generic agent when a domain expert exists.

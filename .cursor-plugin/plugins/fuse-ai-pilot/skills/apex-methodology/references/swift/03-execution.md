@@ -88,14 +88,9 @@ Button("button.save") { ... }
 When a view section has a distinct responsibility, extract it to a subview:
 `ProfileHeader`, `ProfileDetails`, `ProfileActions`
 
-## Update Task Phase
+## Task Phase
 
-At the **start** of this phase, record it in `.cursor/apex/task.json`:
-
-```bash
-jq --arg p "execution" '.tasks[.current_task].phase = $p' .cursor/apex/task.json \
-  > .cursor/apex/task.json.tmp && mv .cursor/apex/task.json.tmp .cursor/apex/task.json
-```
+Phase: `execution`. Do not create or write `.cursor/apex/task.json`: on Cursor no tool syncs it (the harness task sync is Claude-only). State the phase in your REPORT; tracking lives in the agents' REPORTs and `docs/decisions.md`.
 
 ## Next Phase
 

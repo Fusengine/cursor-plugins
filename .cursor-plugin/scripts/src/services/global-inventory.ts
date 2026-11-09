@@ -20,8 +20,8 @@ interface MarketplaceManifest {
  */
 export function inventory(sourceRoot: string): GlobalPluginSource[] {
 	const market = readGlobalJson<MarketplaceManifest>(path.join(sourceRoot, ".cursor-plugin", "marketplace.json"));
-	if (!Array.isArray(market.plugins) || market.plugins.length !== 24) {
-		throw new Error("global install requires exactly 24 marketplace plugins");
+	if (!Array.isArray(market.plugins) || market.plugins.length !== 25) {
+		throw new Error("global install requires exactly 25 marketplace plugins");
 	}
 	return resolveMarketplacePlugins(sourceRoot, market);
 }

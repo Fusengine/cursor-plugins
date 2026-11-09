@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.1.9] - 09-11-2026
+
+- feat(port): port the claude-plugins coordinator workflow — COORDINATOR PATH
+  in `AGENTS.md`, `lead-orchestration` skill, at most 6 concurrent agents;
+  rules, fuse-ai-pilot commands/agents and `apex-methodology` references in sync
+- feat(fuse-ai-pilot): new `web-performance` skill, wired into the 5 web experts
+- fix(docs): `browser_metrics` documented as server counters, not Core Web Vitals
+- chore(experts): agent/skill updates for astro, laravel, nextjs, php, react,
+  rust, security, seo, shadcn-ui, solid, swift-apple-expert, tailwindcss,
+  tanstack-start, typescript, commit-pro
+- feat(fuse-hermes): new plugin (13 skills) at 1.0.0, registered in
+  `.cursor-plugin/marketplace.json` — marketplace now lists 25 plugins
+  (installer, tests, `verify.sh`, docs and README badge updated)
+- chore(plugins): PATCH bump, mirrored in `.cursor-plugin/marketplace.json` —
+  fuse-ai-pilot 1.2.45, fuse-astro 1.0.15, fuse-commit-pro 1.2.27,
+  fuse-laravel 1.2.10, fuse-nextjs 1.1.26, fuse-php 1.0.9, fuse-react 1.0.23,
+  fuse-rules 1.0.25, fuse-rust 1.0.9, fuse-security 1.0.19, fuse-seo 1.0.14,
+  fuse-shadcn-ui 1.0.20, fuse-solid 1.0.21, fuse-swift-apple-expert 1.1.22,
+  fuse-tailwindcss 1.1.13, fuse-tanstack-start 1.0.7, fuse-typescript 1.0.9
+- chore(marketplace): suite `metadata.version` 0.1.8 → 0.1.9, README version badge updated
+
 ## [0.1.8] - 12-10-2026
 
 - fix(installer): keep the shared harness on latest — every installer run

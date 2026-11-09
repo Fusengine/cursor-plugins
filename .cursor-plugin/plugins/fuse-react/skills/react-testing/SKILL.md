@@ -3,8 +3,8 @@ name: react-testing
 description: Testing Library for React 19 - render, screen, userEvent, waitFor, Suspense. Use when writing tests for React components with Vitest.
 versions:
   "@testing-library/react": 16.3.3
-  "@testing-library/user-event": 14.6.7
-  vitest: 5.0.2
+  "@testing-library/user-event": 14.6.8
+  vitest: 5.1.0
   msw: 2.15.0
   react: 19
 user-invocable: true

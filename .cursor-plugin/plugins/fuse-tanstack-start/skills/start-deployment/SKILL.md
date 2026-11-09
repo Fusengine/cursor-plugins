@@ -3,7 +3,7 @@ name: start-deployment
 description: Use when building or deploying a TanStack Start app — Cloudflare, Netlify, Vercel/Node/Bun, prerendering, or env vars. Do NOT use for app logic or generic Vite config.
 versions:
   "@tanstack/react-start": "^1"
-  vite: "^6"
+  vite: "^8"
 user-invocable: false
 references: references/build-and-adapters.md, references/cloudflare.md, references/prerendering.md, references/env-and-checklist.md, references/templates/vite-config-adapters.md, references/templates/cloudflare-deploy.md
 related-skills: nextjs-16, astro-deployment

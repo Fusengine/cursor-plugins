@@ -1,6 +1,6 @@
 # fuse-tanstack-start (Cursor Plugin)
 
-Expert TanStack Start development — the full-stack React framework (Release Candidate) with
+Expert TanStack Start development — the full-stack React framework (1.0 stable) with
 file-based routing, `createServerFn` server functions, selective SSR, middleware, server routes, and
 Nitro-powered deployment.
 

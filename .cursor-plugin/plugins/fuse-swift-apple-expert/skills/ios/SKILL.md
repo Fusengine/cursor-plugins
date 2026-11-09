@@ -2,8 +2,8 @@
 name: ios
 description: Use when building iPhone apps — simulator/device testing, UI automation, or debugging — with XcodeBuildMCP tools.
 versions:
-  ios: 27
-  xcode: 27
+  ios: 27.2
+  xcode: 27.2
 user-invocable: false
 references: references/simulator-tools.md, references/device-tools.md, references/ui-automation.md, references/debugging.md, references/uikit-integration.md
 related-skills: swift-core, swiftui-core, ipados, mcp-tools
@@ -26,7 +26,7 @@ iOS-specific development with XcodeBuildMCP automation tools.
 Before ANY implementation, delegate via `Task` — spawn 3 agents in parallel (single message, 3 `Task` calls):
 
 1. **fuse-ai-pilot:explore-codebase** - Analyze existing iOS patterns
-2. **fuse-ai-pilot:research-expert** - Verify latest iOS 27 docs via Context7/Exa
+2. **fuse-ai-pilot:research-expert** - Verify latest iOS 27.2 docs via Context7/Exa
 3. **mcp__XcodeBuildMCP__discover_projs** - Find Xcode projects
 
 After implementation, run **fuse-ai-pilot:sniper** for validation.
@@ -94,4 +94,5 @@ After implementation, run **fuse-ai-pilot:sniper** for validation.
 3. **Device testing** - Required before release
 4. **Accessibility IDs** - Enable UI automation
 5. **Screenshots** - Document UI states
-6. **Test on oldest supported** - iOS version compatibility
+6. **Test on oldest supported** - iOS version compatibility (minimum deployment target, independent of the 27.2 SDK you build with)
+7. **27 SDK launch rules** - UIKit apps must use the scene-based life cycle or they fail to launch; Info.plist needs a launch screen key; On Demand Resources is deprecated (Background Assets). Details: `swift-core/references/sdk-27-changes.md`

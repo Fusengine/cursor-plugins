@@ -1,0 +1,24 @@
+{
+  "name": "fuse-hermes",
+  "version": "1.0.0",
+  "description": "Expert Nous Research Hermes Agent 0.23+ — config.yaml, SOUL.md / .hermes.md, profiles, delegation, cron, gateways, security, plus chief-of-staff operating patterns driven by a universal profile.yaml",
+  "author": {
+    "name": "Fusengine",
+    "email": "hello@fusengine.ch"
+  },
+  "homepage": "https://github.com/fusengine/agents",
+  "repository": "https://github.com/fusengine/agents",
+  "license": "MIT",
+  "keywords": [
+    "hermes",
+    "hermes-agent",
+    "nous-research",
+    "ai-agent",
+    "delegation",
+    "cron",
+    "gateway",
+    "chief-of-staff",
+    "assistant",
+    "automation"
+  ]
+}

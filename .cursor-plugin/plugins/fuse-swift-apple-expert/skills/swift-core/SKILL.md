@@ -2,10 +2,10 @@
 name: swift-core
 description: Use when implementing Swift 6 fundamentals — concurrency, architecture, testing, i18n, or performance — across any Apple platform.
 versions:
-  swift: 6.4
-  ios: 27
+  swift: 6.4.2
+  ios: 27.2
 user-invocable: false
-references: references/concurrency.md, references/architecture.md, references/testing.md, references/i18n.md, references/performance.md
+references: references/concurrency.md, references/architecture.md, references/testing.md, references/i18n.md, references/performance.md, references/swift-6-4.md, references/sdk-27-changes.md
 related-skills: swiftui-core, solid-swift, ios, macos, ipados, watchos, visionos
 ---
 
@@ -82,6 +82,8 @@ Profile with Instruments. Use lazy loading, avoid heavy work in view body.
 | XCTest, async tests, mocking | [testing.md](references/testing.md) |
 | String Catalogs, localization | [i18n.md](references/i18n.md) |
 | Instruments, optimization | [performance.md](references/performance.md) |
+| Swift 6.4.x: Swift Build/SwiftPM, Subprocess 1.0, language additions | [swift-6-4.md](references/swift-6-4.md) |
+| Xcode/OS 27.0-27.2: breaking changes, deprecations, 27.1/27.2 notes | [sdk-27-changes.md](references/sdk-27-changes.md) |
 
 ---
 

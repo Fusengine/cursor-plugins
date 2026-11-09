@@ -2,7 +2,7 @@
 name: visionos
 description: Use when building Vision Pro apps — spatial computing, RealityKit 3D content, immersive spaces, or volumes.
 versions:
-  visionos: 27
+  visionos: 27.2
 user-invocable: false
 references: references/spatial-computing.md, references/realitykit.md, references/ornaments.md
 related-skills: swift-core, swiftui-core, mcp-tools
@@ -25,7 +25,7 @@ visionOS-specific development for Apple Vision Pro spatial computing.
 Before ANY implementation, delegate via `Task` — spawn 3 agents in parallel (single message, 3 `Task` calls):
 
 1. **fuse-ai-pilot:explore-codebase** - Analyze existing visionOS patterns
-2. **fuse-ai-pilot:research-expert** - Verify latest visionOS 27 docs via Context7/Exa
+2. **fuse-ai-pilot:research-expert** - Verify latest visionOS 27.2 docs via Context7/Exa
 3. **mcp__apple-docs__search_apple_docs** - Check spatial computing patterns
 
 After implementation, run **fuse-ai-pilot:sniper** for validation.
