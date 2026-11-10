@@ -1,9 +1,10 @@
 # fuse-security (Cursor Plugin)
 
 Security vulnerability detection and remediation: OWASP Top 10, SAST pattern scanning, CVE
-research, dependency audit, secrets detection, security headers, auth hardening.
+research, dependency audit, secrets detection, security headers, auth hardening, and review of
+AI-agent configuration (`agentic-security`).
 
-Ported from the Claude Code plugin `fuse-security` v1.0.16. The plugin name is deliberately
+Ported from the Claude Code plugin `fuse-security` v1.0.22 (claude-plugins tag `v1.39.47`). The plugin name is deliberately
 identical across both ecosystems so cross-plugin references (`fuse-security:<skill>`) keep
 resolving.
 
@@ -12,13 +13,14 @@ resolving.
 | Component | Count | Cursor discovery |
 | :-- | :-- | :-- |
 | Agents (subagents) | 1 | `agents/*.md` |
-| Skills | 5 | `skills/<name>/SKILL.md` |
+| Skills | 6 | `skills/<name>/SKILL.md` |
 | Commands | 1 | `commands/*.md` |
 | Hooks | 3 events | `hooks/hooks.json` |
 | Rules | 2 | `rules/*.md` — discovered candidates; plain-`.md` activation runtime-unverified |
 
-`rules/apex-workflow.md` and `rules/security-rules.md` are ported verbatim at the same relative
-path (R20c). Cursor's plugin reference includes `rules/` in default discovery and accepts `.md`
+`rules/apex-workflow.md` and `rules/security-rules.md` are ported at the same relative path
+(R20c); `security-rules.md` is verbatim, `apex-workflow.md` differs only by the harness scan
+command (see Commands below). Cursor's plugin reference includes `rules/` in default discovery and accepts `.md`
 candidates. The Rules format documentation focuses on `.mdc` files with rule frontmatter, so
 native activation of these plain source-identical `.md` files remains runtime-unverified. They
 were **not** translated into Cursor's `.cursor/rules/*.mdc` format: that would add different
@@ -36,14 +38,18 @@ configured on the Cursor side for CVE research and live probing to work.
 
 ### Agents
 
-- **`model: sonnet` → `model: grok-4.6`** on `security-expert` — the uniform-model doctrine: every
+- **`model: opus` → `model: grok-4.6`** on `security-expert` — the uniform-model doctrine: every
   ported agent runs on `grok-4.6`, whose default effort is `medium`, written bare (`[effort=medium]`
   would be redundant). This agent is an executant, not an organ of control (that role belongs to
   `challenger` and `sniper` in `fuse-ai-pilot`), so it takes no `[effort=high]`. `claude-opus-*`
-  remains barred by policy.
-- **No `readonly:`.** R6's condition fails twice: the source `tools:` contains both `Edit` and
-  `Write` (the agent applies fixes), and it declares 23 `mcp__*` tools.
-- **`tools:` is kept in the frontmatter, unchanged**, and a `## Allowed tools` block is emitted at
+  remains barred by policy. The source `effort: medium` key is dropped.
+- **The agent reports, it never fixes.** The source `tools:` no longer contains `Edit` (its only
+  write is the audit report, via `Write`); the port follows it. Remediation is dispatched by the
+  caller to the domain expert and `sniper`.
+- **No `readonly:`.** R6's condition still fails: the agent keeps `Write` for the report and
+  declares 23 `mcp__*` tools.
+- **`tools:` follows the source with two Cursor substitutions**: `Agent` → `Task`, and the Claude
+  Code-only `SendMessage` is removed. A `## Allowed tools` block mirroring the line is emitted at
   the top of the body **in addition** (R4).
 - **`color:` and `skills:` are kept as-is** (R7). `skills:` mixes bare names with one
   plugin-qualified reference, `fuse-ai-pilot:fuse-browser-usage`; whether the qualified form
@@ -51,18 +57,26 @@ configured on the Cursor side for CVE research and live probing to work.
 
 ### Skills
 
-All 5 satisfy Cursor's hard rule that `name:` equals the parent folder name: `auth-audit`,
-`cve-research`, `dependency-audit`, `security-headers`, `security-scan`. `references/` and the
-nested `references/templates/` folders are natively supported and were copied verbatim (R9).
+All 6 satisfy Cursor's hard rule that `name:` equals the parent folder name: `agentic-security`,
+`auth-audit`, `cve-research`, `dependency-audit`, `security-headers`, `security-scan`.
+`references/` and the nested `references/templates/` folders are natively supported and were
+copied verbatim (R9).
 
-Keys preserved across all 5 skills, absent from Cursor's documented set and **not verified against
+`agentic-security` audits AI-agent configuration (workspace trust, hooks, MCP servers, prompt
+injection, permissions, secrets, CI agents). Its references describe Claude Code facts
+(`CLAUDE_PLUGIN_ROOT`, `.claude/` paths, CVE-2025-59536 ...) as **audit knowledge about the
+audited target**, so they are kept verbatim and are not Cursor-translated.
+`security-scan` runs the harness scanner as `npx -y @fusengine/harness scan <dir>` (see
+Commands).
+
+Keys preserved across all 6 skills, absent from Cursor's documented set and **not verified against
 the binary**, so unknown rather than unsupported (R19): `argument-hint`, `user-invocable`.
 
 `user-invocable` was **not** translated to `disable-model-invocation` (R8).
 
 ### Commands
 
-`commands/scan.md` is byte-identical to the source (R10). It declares no `name`; Cursor derives
+`commands/scan.md` matches the source except for the harness scan command (see below). It declares no `name`; Cursor derives
 `/scan` from the filename. It uses `$ARGUMENTS`, which `qxo(e,t)` substitutes with the raw argument
 text — confirmed in the binary — so `/scan --deps-only src/` works as intended.
 
@@ -70,13 +84,14 @@ It keeps `argument-hint` and `disable-model-invocation: false` verbatim (R7 / R1
 `argument_hint` exists at protobuf level (`aiserver.v1.GlobalCommand` field 5), so the concept is
 native; the exact casing expected in local frontmatter could not be confirmed.
 
-One body construct does not execute under Cursor and was kept verbatim rather than rewritten:
-`scan.md` line 36 tells the model to run
-`bun ${CLAUDE_PLUGIN_ROOT}/../node_modules/@fusengine/harness/dist/cli/bin.mjs scan <dir>`.
+One body construct does not execute under Cursor and is rewritten. The source tells the model to
+run `bun ${CLAUDE_PLUGIN_ROOT}/../node_modules/@fusengine/harness/dist/cli/bin.mjs scan <dir>`.
 `${CLAUDE_PLUGIN_ROOT}` **is** substituted by Cursor, but only inside a hook's `command` string and
 only when the hook's source is a `claude-plugin` — never inside markdown prose handed to the model.
-The same limitation exists under Claude Code, so this is not a regression introduced by the port;
-it is noted so the next reader does not take it for one.
+The port therefore uses `npx -y @fusengine/harness scan <dir>` in `commands/scan.md`,
+`skills/security-scan/SKILL.md`, `agents/security-expert.md`, `rules/apex-workflow.md` and
+`skills/security-scan/references/templates/scan-report.md`; the first three add the sentence "This standalone CLI verb does not depend on Cursor hook normalization."
+(`verify.sh` fails any `${CLAUDE_PLUGIN_ROOT}` in the two native command files).
 
 ### Hooks
 
@@ -145,10 +160,12 @@ on all three entries.
 
 ## Runtime paths
 
-This plugin references **no** `.claude/…` path in the body of any skill, agent, command or rules
-file. Nothing to resolve harness-side, and the R21 clause is deliberately not reproduced here: it
-asserts that this plugin's bodies reference `.claude/…` state files, which would be factually
-false.
+No skill, agent, command or rules file instructs the model to read or write a `.claude/…` state
+file of this plugin; nothing to resolve harness-side. The `.claude/…`, `.claude-plugin/` and
+`CLAUDE.md` mentions in `agents/security-expert.md`, `commands/scan.md`, `rules/security-rules.md`
+and `skills/agentic-security/**` are audit targets (the agent-configuration files that the audit
+inspects), kept verbatim, not runtime paths of this plugin. The R21 clause is deliberately not
+reproduced here.
 
 The harness's own `~/.claude/logs/00-security` state directory is mentioned nowhere in the ported
 content — it appeared only in the source `hooks.json` `_description`, which R16 removed and this
@@ -165,8 +182,10 @@ rewritten above.
 - **Degraded, not lost — the two MCP matchers.** Their server segment is gone, so the ported
   matchers are enumerations that must be maintained by hand (see the caveat above). A tool added to
   either MCP server stops being tracked without any error.
-- `${CLAUDE_PLUGIN_ROOT}` in `commands/scan.md` and `skills/security-scan/SKILL.md` is not
-  substituted in markdown prose — under Cursor **or** Claude Code. Not a port regression.
+- `${CLAUDE_PLUGIN_ROOT}` is not substituted in markdown prose — under Cursor **or** Claude Code —
+  so the harness scan command was rewritten to `npx -y @fusengine/harness scan <dir>` (see
+  Commands). The remaining `CLAUDE_PLUGIN_ROOT` mentions in
+  `skills/agentic-security/references/hooks-plugins.md` are audit knowledge about audited plugins.
 - `Glob` and `MultiEdit` are `NOT PORTABLE` matchers (R13), `Notification` and `PermissionRequest`
   are `NOT PORTABLE` events (R12); this plugin uses none of them.
 - `rules/*.md` are default-discovery candidates, but native activation of the verbatim plain `.md`
