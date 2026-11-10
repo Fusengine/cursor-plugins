@@ -33,10 +33,10 @@ $installer = Get-ChildItem "$HOME\.cursor\plugins\marketplaces\github.com\fuseng
 
 Marketplace registration and bundled installation are distinct. The official
 `agent plugin marketplace add` command registers `fusengine-plugins`; it does
-not install the 25 plugins. The repository's installer performs the global
+not install the 26 plugins. The repository's installer performs the global
 installation and defaults to `~/.cursor/` on macOS/Linux or
 `%USERPROFILE%\.cursor\` on Windows. Cursor's marketplace checkout contains the
-installer runtime and all 25 plugin sources under `.cursor-plugin/`, so no
+installer runtime and all 26 plugin sources under `.cursor-plugin/`, so no
 second clone is required.
 
 ## Project scope

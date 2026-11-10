@@ -178,6 +178,32 @@
       "category": "development"
     },
     {
+      "name": "fuse-devops",
+      "source": ".cursor-plugin/plugins/fuse-devops",
+      "description": "Expert self-hosted IT/DevOps — Docker, Kubernetes, Linux, Proxmox VE, OpenStack, Terraform/OpenTofu, Ansible, CI/CD, observability, storage and backup, secrets, databases — with a discovery, dry-run, one-go, verify, rollback safety model",
+      "version": "1.0.0",
+      "author": {
+        "name": "Fusengine",
+        "email": "hello@fusengine.ch"
+      },
+      "homepage": "https://github.com/fusengine/agents",
+      "repository": "https://github.com/fusengine/agents",
+      "license": "MIT",
+      "keywords": [
+        "devops",
+        "docker",
+        "kubernetes",
+        "linux",
+        "proxmox",
+        "openstack",
+        "terraform",
+        "ansible",
+        "observability",
+        "infrastructure"
+      ],
+      "category": "development"
+    },
+    {
       "name": "fuse-go",
       "source": ".cursor-plugin/plugins/fuse-go",
       "description": "Expert Go 1.26+ — idioms, concurrency, backend services, cargo-grade tooling (golangci-lint v2, govulncheck), with SOLID principles",
@@ -372,7 +398,7 @@
       "name": "fuse-rules",
       "source": ".cursor-plugin/plugins/fuse-rules",
       "description": "Global rules for all sessions: APEX workflow, SOLID/DRY enforcement, project detection, agent delegation, frontend/git standards",
-      "version": "1.0.25",
+      "version": "1.0.26",
       "author": {
         "name": "Fusengine"
       },

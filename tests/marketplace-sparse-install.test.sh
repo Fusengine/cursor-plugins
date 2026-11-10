@@ -43,7 +43,7 @@ const path = require('path');
 const [root, baselineRoot] = process.argv.slice(2);
 const baseline = JSON.parse(fs.readFileSync(path.join(baselineRoot, '.cursor-plugin/marketplace.json')));
 const current = JSON.parse(fs.readFileSync(path.join(root, '.cursor-plugin/marketplace.json')));
-if (baseline.plugins.length !== 25 || current.plugins.length !== 25) throw new Error('expected 25 marketplace plugins');
+if (baseline.plugins.length !== 26 || current.plugins.length !== 26) throw new Error('expected 26 marketplace plugins');
 
 function requireRegular(file) {
   const stat = fs.lstatSync(file);
@@ -121,7 +121,7 @@ const fs = require('fs');
 const path = require('path');
 const root = process.argv[2];
 const market = JSON.parse(fs.readFileSync(path.join(root, '.cursor-plugin/marketplace.json'), 'utf8'));
-if (market.plugins.length !== 25) throw new Error('expected 25 marketplace plugins');
+if (market.plugins.length !== 26) throw new Error('expected 26 marketplace plugins');
 for (const entry of market.plugins) {
   const manifest = path.join(root, entry.source, '.cursor-plugin', 'plugin.json');
   if (!fs.existsSync(manifest)) throw new Error(`sparse checkout missing ${entry.name}: ${manifest}`);
@@ -155,7 +155,7 @@ const loaded = JSON.parse(execFileSync(process.execPath, ['.cursor/fusengine/loa
   cwd: project,
   encoding: 'utf8',
 }));
-if (loaded.pluginPaths.length !== 25) throw new Error('project loader did not return 25 plugins');
+if (loaded.pluginPaths.length !== 26) throw new Error('project loader did not return 26 plugins');
 for (const [index, pluginPath] of loaded.pluginPaths.entries()) {
   const expected = path.join(managedPlugins, market.plugins[index].name);
   if (pluginPath !== expected) throw new Error(`project plugin is not flat: ${pluginPath}`);
@@ -164,4 +164,4 @@ NODE
 
 test "$CACHE_STATUS" = "$(git -C "$CACHE" status --porcelain=v1)"
 test ! -e "$CACHE/scripts"
-printf 'PASS cone-sparse marketplace installs 25 flat plugins globally and per project\n'
+printf 'PASS cone-sparse marketplace installs 26 flat plugins globally and per project\n'

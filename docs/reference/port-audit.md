@@ -5,7 +5,7 @@ maintainers, not installation guidance.
 
 ## Inventory invariants
 
-- `.cursor-plugin/marketplace.json` contains exactly 25 `plugins[]` entries.
+- `.cursor-plugin/marketplace.json` contains exactly 26 `plugins[]` entries.
 - Every `source` is a top-level directory with `.cursor-plugin/plugin.json`.
 - Marketplace and plugin manifests agree on plugin name and version.
 - `core-guards` and `fuse-rules` are ordinary Cursor plugins because Cursor has no marketplace

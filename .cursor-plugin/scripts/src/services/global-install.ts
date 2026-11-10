@@ -61,7 +61,7 @@ function stageLocal(nonce: string): string {
 	return stage;
 }
 
-/** Install (or dry-run preview) the 25 marketplace plugins and the global rule. */
+/** Install (or dry-run preview) the 26 marketplace plugins and the global rule. */
 function installGlobal(): void {
 	recoverGlobalTransaction(paths.cursorRoot);
 	const plugins = inventory(paths.sourceRoot);
@@ -73,7 +73,7 @@ function installGlobal(): void {
 	preflightOwned(paths, previous, plugins);
 	const rule = fs.readFileSync(ruleSource);
 	if (options.dryRun) {
-		process.stdout.write(`Would install 25 plugins under ${paths.localRoot}\nWould write ${paths.rulePath}\nDry run: nothing written.\n`);
+		process.stdout.write(`Would install 26 plugins under ${paths.localRoot}\nWould write ${paths.rulePath}\nDry run: nothing written.\n`);
 		return;
 	}
 	const nonce = `${process.pid}-${Date.now()}`;
@@ -101,7 +101,7 @@ function installGlobal(): void {
 		if (fs.existsSync(stage)) fs.rmSync(stage, { recursive: true });
 		throw error;
 	}
-	process.stdout.write(`Installed 25 user-global plugins in ${paths.localRoot}\nReload the Cursor window to activate them.\n`);
+	process.stdout.write(`Installed 26 user-global plugins in ${paths.localRoot}\nReload the Cursor window to activate them.\n`);
 }
 
 /** Uninstall (or dry-run preview) only the artifacts still matching the receipt. */
