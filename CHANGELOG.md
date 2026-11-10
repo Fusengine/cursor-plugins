@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.1.11] - 10-11-2026
+
+- feat(security): port the claude-plugins security plugin refresh (v1.39.47) —
+  new `agentic-security` skill; `auth-audit`, `cve-research`, `dependency-audit`,
+  `security-headers`, `security-scan` skills (new references), `security-expert`
+  agent, `scan` command and rules refreshed; Cursor adaptations (scan via
+  `npx -y @fusengine/harness scan <dir>`, agent model grok-4.6, Agent → Task)
+- chore(plugins): PATCH bump, mirrored in `.cursor-plugin/marketplace.json` —
+  fuse-security 1.0.20
+- chore(marketplace): suite `metadata.version` 0.1.10 → 0.1.11, README version badge updated
+
 ## [0.1.10] - 09-11-2026
 
 - docs(ai-pilot): port the claude-plugins lead-corrections rules (49e2ea35) —
