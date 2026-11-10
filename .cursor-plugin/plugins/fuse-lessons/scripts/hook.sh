@@ -50,7 +50,7 @@
 # Cursor's 60 s default hook timeout); sessionStart entries that can upgrade
 # therefore carry no timeout below 60.
 
-HARNESS_MIN="0.1.115"
+HARNESS_MIN="0.1.116"
 HARNESS_SPEC="latest"
 CONTROL_ROOT="${FUSE_HARNESS_ROOT:-${HOME}/.cursor/.fusengine-global}"
 PKG_REL="node_modules/@fusengine/harness"

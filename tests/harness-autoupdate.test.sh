@@ -40,7 +40,7 @@ if [ "$1" = add ]; then
   [ -z "$STUB_ADD_SLEEP" ] || /bin/sleep "$STUB_ADD_SLEEP"
   [ "${STUB_ADD_RC:-0}" = 0 ] || exit "$STUB_ADD_RC"
   mkdir -p node_modules/@fusengine/harness/dist/cli
-  printf '{\n  "name": "@fusengine/harness",\n  "version": "%s"\n}\n' "${STUB_NEW_VERSION:-0.1.115}" \
+  printf '{\n  "name": "@fusengine/harness",\n  "version": "%s"\n}\n' "${STUB_NEW_VERSION:-0.1.116}" \
     > node_modules/@fusengine/harness/package.json
   echo "// bin" > node_modules/@fusengine/harness/dist/cli/bin.mjs
   exit 0
@@ -91,9 +91,9 @@ reset_env() { unset STUB_ADD_SLEEP FUSE_HARNESS_INSTALL_TIMEOUT_SEC STUB_ADD_RC 
 eq() { [ "$1" = "$2" ]; }
 
 # 1. Current version at session start: zero process, zero update, scopes intact.
-reset_env; new_case; seed_current 0.1.115
+reset_env; new_case; seed_current 0.1.116
 hook --session-start rules
-check "current: bin run with scope, flag stripped" grep -q "versions/0.1.115/.*bin.mjs hook cursor rules$" "$LOG"
+check "current: bin run with scope, flag stripped" grep -q "versions/0.1.116/.*bin.mjs hook cursor rules$" "$LOG"
 check "current: no bun add"                       eq "$(adds)" 0
 check "current: ZERO external process"            eq "$(wc -c < "$PROCS" | tr -d ' ')" 0
 
@@ -107,8 +107,8 @@ check "newer: ZERO external process" eq "$(wc -c < "$PROCS" | tr -d ' ')" 0
 reset_env; new_case; seed_current 0.1.110
 hook --session-start solid
 check "stale: exactly one bun add"        eq "$(adds)" 1
-check "stale: pointer switched"           eq "$(cur)" 0.1.115
-check "stale: new bin executed with scope" grep -q "versions/0.1.115/.*bin.mjs hook cursor solid$" "$LOG"
+check "stale: pointer switched"           eq "$(cur)" 0.1.116
+check "stale: new bin executed with scope" grep -q "versions/0.1.116/.*bin.mjs hook cursor solid$" "$LOG"
 check "stale: previous version kept"      test -f "$CR/versions/0.1.110/node_modules/@fusengine/harness/dist/cli/bin.mjs"
 check "stale: no stamp after success"     test ! -e "$CR/.harness-update-failed"
 check "stale: lock released"              test ! -e "$CR/.harness-update.lock"
@@ -118,11 +118,11 @@ check "stale: staging dir cleaned"        eq "$(ls -A "$CR/versions" | grep -c '
 reset_env; new_case; seed_legacy 0.1.110
 hook --session-start
 check "legacy: one bun add"          eq "$(adds)" 1
-check "legacy: pointer created"      eq "$(cur)" 0.1.115
+check "legacy: pointer created"      eq "$(cur)" 0.1.116
 check "legacy: legacy tree untouched" test -f "$CR/node_modules/@fusengine/harness/dist/cli/bin.mjs"
 
 # 5. Legacy fast path without upgrade need.
-reset_env; new_case; seed_legacy 0.1.115
+reset_env; new_case; seed_legacy 0.1.116
 hook --session-start
 check "legacy current: legacy bin runs" grep -q "$CR/node_modules/@fusengine/harness/dist/cli/bin.mjs hook cursor" "$LOG"
 check "legacy current: no add"          eq "$(adds)" 0
@@ -207,10 +207,10 @@ check "prune: old extra removed"   test ! -e "$CR/versions/0.1.100"
 check "prune: dead staging removed" test ! -e "$CR/versions/.stage-999"
 check "prune: previous kept"        test -d "$CR/versions/0.1.110"
 check "prune: recent extra kept"    test -d "$CR/versions/0.1.108"
-check "prune: new kept"             test -d "$CR/versions/0.1.115"
+check "prune: new kept"             test -d "$CR/versions/0.1.116"
 
 # 14. Hostile pointer never escapes the control root.
-reset_env; new_case; seed_legacy 0.1.115; echo "../../etc" > "$CR/current"
+reset_env; new_case; seed_legacy 0.1.116; echo "../../etc" > "$CR/current"
 hook --session-start
 check "bad pointer: legacy bin used" grep -q "$CR/node_modules/@fusengine/harness/dist/cli/bin.mjs hook cursor" "$LOG"
 
@@ -218,8 +218,8 @@ check "bad pointer: legacy bin used" grep -q "$CR/node_modules/@fusengine/harnes
 reset_env; new_case
 hook solid
 check "self-heal: one add"        eq "$(adds)" 1
-check "self-heal: pointer set"    eq "$(cur)" 0.1.115
-check "self-heal: new bin ran"    grep -q "versions/0.1.115/.*bin.mjs hook cursor solid$" "$LOG"
+check "self-heal: pointer set"    eq "$(cur)" 0.1.116
+check "self-heal: new bin ran"    grep -q "versions/0.1.116/.*bin.mjs hook cursor solid$" "$LOG"
 rm -rf "$CR/versions" "$CR/current"; : > "$LOG"
 hook solid
 check "self-heal: stamp stops a second attempt" eq "$(adds)" 0
@@ -228,7 +228,7 @@ check "self-heal: stamp stops a second attempt" eq "$(adds)" 0
 reset_env; new_case; seed_current 0.1.110; : > "$CR/.harness-update-failed"
 hook --install-harness; rc=$?
 check "install-harness: rc 0"           eq "$rc" 0
-check "install-harness: pointer moved"  eq "$(cur)" 0.1.115
+check "install-harness: pointer moved"  eq "$(cur)" 0.1.116
 check "install-harness: no bin run"    eq "$(runs)" 0
 reset_env; new_case; seed_current 0.1.110; STUB_ADD_RC=1; hook --install-harness; rc=$?
 check "install-harness failure: rc 1, pointer intact" eq "$rc.$(cur)" 1.0.1.110
@@ -237,11 +237,11 @@ reset_env
 # 17. versions/<new> exists but is broken: replaced by the verified stage, never kept broken.
 # (The stub bun runs every bin successfully, so "broken" is simulated by a missing bin.)
 reset_env; new_case; seed_current 0.1.110
-mkdir -p "$CR/versions/0.1.115/node_modules"
+mkdir -p "$CR/versions/0.1.116/node_modules"
 hook --session-start
-check "broken dest: replaced and switched"  eq "$(cur)" 0.1.115
-check "broken dest: bin present afterwards" test -f "$CR/versions/0.1.115/node_modules/@fusengine/harness/dist/cli/bin.mjs"
-check "broken dest: old tree kept aside"    test -d "$CR/versions/0.1.115.broken.$(ls "$CR/versions" | sed -n 's/.*broken\.//p' | head -1)"
+check "broken dest: replaced and switched"  eq "$(cur)" 0.1.116
+check "broken dest: bin present afterwards" test -f "$CR/versions/0.1.116/node_modules/@fusengine/harness/dist/cli/bin.mjs"
+check "broken dest: old tree kept aside"    test -d "$CR/versions/0.1.116.broken.$(ls "$CR/versions" | sed -n 's/.*broken\.//p' | head -1)"
 
 # 18. `current` is a directory: the switch is reported as failed (stamp), not as success.
 reset_env; new_case; seed_current 0.1.110; rm "$CR/current"; mkdir "$CR/current"
@@ -263,7 +263,7 @@ check "hung install: old bin ran"                grep -q "versions/0.1.110/.*bin
 check "hung install: lock released"              test ! -e "$CR/.harness-update.lock"
 check "hung install: staging cleaned"            eq "$(ls -A "$CR/versions" | grep -c '^\.stage' || true)" 0
 check "hung install: exactly one stderr warning" eq "$(wc -l < "$T/err" | tr -d ' ')" 1
-check "hung install: warning names versions"     grep -q "installed 0.1.110, target >= 0.1.115" "$T/err"
+check "hung install: warning names versions"     grep -q "installed 0.1.110, target >= 0.1.116" "$T/err"
 check "hung install: stdout clean"               test ! -s "$T/out"
 reset_env
 
@@ -290,15 +290,31 @@ if [ -z "${HOOK_SH:-}" ]; then
   check "hook.sh copies: all byte-identical" eq "$distinct" 1
 fi
 
+# 21b. 0.1.115 carries the false "[CONFIRM] Shell redirect" on `( ... 2>&1) || true`: it is stale
+#      now that HARNESS_MIN is 0.1.116, on every upgrade path.
+reset_env; new_case; seed_current 0.1.115
+hook --session-start solid
+check "0.1.115 is stale: session-start upgrades it" eq "$(adds).$(cur)" 1.0.1.116
+reset_env; new_case; seed_current 0.1.115
+hook --harness-check
+check "0.1.115 is stale: --harness-check upgrades it" eq "$(adds).$(cur).$(runs)" 1.0.1.116.0
+reset_env; new_case; seed_legacy 0.1.115
+hook --session-start
+check "0.1.115 legacy install is stale too" eq "$(adds).$(cur)" 1.0.1.116
+reset_env; new_case; seed_current 0.1.115
+hook --install-harness; rc=$?
+check "installer path (--install-harness) upgrades 0.1.115 regardless of HARNESS_MIN" eq "$rc.$(cur)" 0.0.1.116
+reset_env
+
 # 22. --harness-check (upgrade-only mode for plugins whose sessionStart must not run the bin).
 reset_env; new_case; seed_current 0.1.110
 hook --harness-check > "$T/out" 2> "$T/err"; rc=$?
 check "check/stale: rc 0"               eq "$rc" 0
 check "check/stale: one bun add"        eq "$(adds)" 1
-check "check/stale: pointer switched"   eq "$(cur)" 0.1.115
+check "check/stale: pointer switched"   eq "$(cur)" 0.1.116
 check "check/stale: bin never executed" eq "$(runs)" 0
 check "check/stale: stdout empty"       test ! -s "$T/out"
-reset_env; new_case; seed_current 0.1.115
+reset_env; new_case; seed_current 0.1.116
 hook --harness-check > "$T/out" 2> "$T/err"; rc=$?
 check "check/current: rc 0, nothing run" eq "$rc.$(adds).$(runs)" 0.0.0
 check "check/current: ZERO process"      eq "$(wc -c < "$PROCS" | tr -d ' ')" 0
@@ -320,7 +336,7 @@ hook --install-harness > "$T/out" 2> "$T/err"; rc=$?
 check "install-harness failure: rc 1" eq "$rc" 1
 check "install-harness failure: one warning line, stdout empty" eq "$(wc -l < "$T/err" | tr -d ' ').$(wc -c < "$T/out" | tr -d ' ')" 1.0
 check "install-harness failure: warning text, no 'retry in -'" \
-  bash -c 'grep -q "installed 0.1.110, target >= 0.1.115" "$1" && grep -q "re-run the installer to retry" "$1" && ! grep -q "retry in -" "$1"' _ "$T/err"
+  bash -c 'grep -q "installed 0.1.110, target >= 0.1.116" "$1" && grep -q "re-run the installer to retry" "$1" && ! grep -q "retry in -" "$1"' _ "$T/err"
 reset_env
 
 # 24. Install bound stays under Cursor's 60 s default hook timeout.
