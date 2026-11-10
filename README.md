@@ -50,4 +50,4 @@ scope, detailed installation, and filesystem layouts, see
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE). Copyright (c) 2026 Fusengine.
