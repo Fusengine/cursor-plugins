@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.1.13] - 11-11-2026
+
+- chore(harness): shared harness minimum raised to `@fusengine/harness`
+  0.1.116 (`HARNESS_MIN` in every `hook.sh`) — existing 0.1.115 installs
+  upgrade at the next session start; fixes the false
+  `[CONFIRM] Bash file write Shell redirect` on `( … 2>&1) || true`
+- docs(license): root MIT `LICENSE` (Copyright (c) 2026 Fusengine Sàrl) and
+  `docs/decisions.md` decisions journal added; README License section links it
+- docs(commit-pro): fuse-commit-pro `LICENSE` holder changed to Fusengine Sàrl
+- chore(plugins): PATCH bump, mirrored in `.cursor-plugin/marketplace.json` —
+  core-guards 1.1.41, fuse-ai-pilot 1.2.48, fuse-cartographer 1.0.16,
+  fuse-changelog 1.0.18, fuse-commit-pro 1.2.28, fuse-design 2.2.13,
+  fuse-go 1.0.10, fuse-hermes 1.0.2, fuse-laravel 1.2.12, fuse-lessons 1.0.10,
+  fuse-nextjs 1.1.28, fuse-php 1.0.11, fuse-react 1.0.25, fuse-rules 1.0.27,
+  fuse-rust 1.0.11, fuse-security 1.0.22, fuse-seo 1.0.16,
+  fuse-shadcn-ui 1.0.22, fuse-solid 1.0.23, fuse-swift-apple-expert 1.1.24,
+  fuse-tailwindcss 1.1.15, fuse-tanstack-start 1.0.9, fuse-typescript 1.0.11
+- chore(marketplace): suite `metadata.version` 0.1.12 → 0.1.13, README version badge updated
+
 ## [0.1.12] - 10-11-2026
 
 - feat(devops): new fuse-devops plugin at 1.0.0 — `devops-expert` agent + 18
