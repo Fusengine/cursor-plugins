@@ -1,6 +1,6 @@
 # Fusengine Cursor Plugins
 
-![version](https://img.shields.io/badge/version-0.1.12-blue?style=flat-square)
+![version](https://img.shields.io/badge/version-0.1.13-blue?style=flat-square)
 ![plugins](https://img.shields.io/badge/plugins-26-brightgreen?style=flat-square)
 ![runtime](https://img.shields.io/badge/runtime-Cursor%20CLI-black?style=flat-square)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)
@@ -50,4 +50,4 @@ scope, detailed installation, and filesystem layouts, see
 
 ## License
 
-MIT
+MIT — see [LICENSE](LICENSE). Copyright (c) 2026 Fusengine Sàrl.
