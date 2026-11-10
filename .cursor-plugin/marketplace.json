@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Professional Cursor plugins with APEX workflow, SOLID principles, and expert development agents for Next.js, Laravel, Swift, Tailwind CSS, and more",
-    "version": "0.1.10"
+    "version": "0.1.11"
   },
   "plugins": [
     {
@@ -411,7 +411,7 @@
       "name": "fuse-security",
       "source": ".cursor-plugin/plugins/fuse-security",
       "description": "Security vulnerability detection and remediation: OWASP Top 10, SAST scanning, CVE research, dependency audit, secrets detection",
-      "version": "1.0.19",
+      "version": "1.0.20",
       "author": {
         "name": "Fusengine",
         "email": "hello@fusengine.ch"
