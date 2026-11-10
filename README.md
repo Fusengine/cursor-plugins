@@ -1,11 +1,11 @@
 # Fusengine Cursor Plugins
 
-![version](https://img.shields.io/badge/version-0.1.11-blue?style=flat-square)
-![plugins](https://img.shields.io/badge/plugins-25-brightgreen?style=flat-square)
+![version](https://img.shields.io/badge/version-0.1.12-blue?style=flat-square)
+![plugins](https://img.shields.io/badge/plugins-26-brightgreen?style=flat-square)
 ![runtime](https://img.shields.io/badge/runtime-Cursor%20CLI-black?style=flat-square)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)
 
-> **Cursor plugin marketplace.** 25 expert plugins for APEX workflows, SOLID/DRY
+> **Cursor plugin marketplace.** 26 expert plugins for APEX workflows, SOLID/DRY
 > enforcement, framework guidance, security, design, Git, SEO, and code quality.
 
 ## Quick install
@@ -32,7 +32,7 @@ These are two distinct steps: `agent plugin marketplace add` registers
 `fusengine-plugins`; it does not install the plugins. The bundled installer then
 installs them globally for the current user. Its default target is `~/.cursor/`
 on macOS/Linux or `%USERPROFILE%\.cursor\` on Windows. The `Cursor marketplace snapshot`
-supplies the complete installer and all 25 plugin sources.
+supplies the complete installer and all 26 plugin sources.
 
 **Prerequisites:** Cursor CLI, Git, and Bun available to Cursor (install with
 `curl -fsSL https://bun.sh/install | bash`). For project

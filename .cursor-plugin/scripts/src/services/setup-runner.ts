@@ -61,13 +61,14 @@ export async function runSetup(
 	// `installClaudeMd` stays available for the project scope.
 	await installDeps(pluginsDir);
 
-	// Shared harness: the hook.sh wrappers run whatever is vendored and never
-	// upgrade it, so THIS is the upgrade path — every run moves it to the latest
-	// published release (spec `latest`, never a pinned version). Fail-open.
+	// Shared harness: every run moves it to the latest published release through
+	// hook.sh's staged install + atomic switch (the same routine the wrappers use
+	// at session start), never an in-place replacement. Fail-open.
 	const vendorSpinner = p.spinner();
 	vendorSpinner.start("Refreshing shared @fusengine/harness to latest...");
 	const vendored = await vendorHarness({
-		manifestSrc: paths.harnessManifestSrc,
+		hookScript: paths.harnessHookScript,
+		warn: (message) => p.log.warn(message),
 		controlRoot: join(paths.marketplace, ".fusengine-global"),
 	});
 	vendorSpinner.stop(`Shared harness: ${vendored}`);

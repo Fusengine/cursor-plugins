@@ -25,7 +25,7 @@ esac
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 LOCAL_DIR="$HOME/.cursor/plugins/local"
 MARKETPLACE="$ROOT/.cursor-plugin/marketplace.json"
-EXPECTED_PLUGINS=25
+EXPECTED_PLUGINS=26
 SOLID_MAX_LINES="${FUSE_SOLID_MAX_LINES:-200}"
 
 PASS_N=0
@@ -226,7 +226,16 @@ if (matchers.length && mcpOk === matchers.length) P('no matcher uses the Claude 
 
 // ------------------------------------------------------- 4. JSON path hygiene
 H('4. JSON hygiene (portability)');
-const jsonFiles = collect(ROOT, (n) => n.endsWith('.json'));
+// Scope = what ships: git-tracked plus untracked-but-not-ignored files, so gitignored
+// tool caches (.harness/, node_modules) are not scanned. Outside a git checkout, fall
+// back to walking the working tree.
+function shippedJson() {
+  try {
+    const out = require('child_process').execFileSync('git', ['-C', ROOT, 'ls-files', '-co', '--exclude-standard', '-z', '--', '*.json'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    return out.split('\0').filter(Boolean).map((r) => path.join(ROOT, r)).filter((p) => fs.existsSync(p));
+  } catch (e) { return null; }
+}
+const jsonFiles = shippedJson() || collect(ROOT, (n) => n.endsWith('.json'));
 const hits = [];
 const HOOK_SET = {};
 for (const f of hookFiles) HOOK_SET[f] = true;
@@ -508,10 +517,10 @@ cat <<'CHECKLIST'
    gate, or its rules panel; they exist only inside the running editor. They are
    listed here so they are not mistaken for "verified".
 
-   [ ] 1. Do all 25 plugins appear in Customize?
+   [ ] 1. Do all 26 plugins appear in Customize?
           Where: Cursor Settings -> Plugins / Customize, after 'Developer: Reload Window'.
-          PASS:  the list shows 25 entries under "fusengine-plugins" (core-guards,
-                 fuse-ai-pilot ... fuse-typescript). 24 means one entry was rejected;
+          PASS:  the list shows 26 entries under "fusengine-plugins" (core-guards,
+                 fuse-ai-pilot ... fuse-typescript). 25 means one entry was rejected;
                  0 means the marketplace root was not loaded at all.
           If it fails: the JSON is provably well-formed (checks 1-6 above), so look at
           Help -> Toggle Developer Tools -> Console for the load error.

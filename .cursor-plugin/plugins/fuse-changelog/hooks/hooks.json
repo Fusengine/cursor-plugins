@@ -1,6 +1,12 @@
 {
   "version": 1,
   "hooks": {
+    "sessionStart": [
+      {
+        "command": "./scripts/hook.sh --harness-check",
+        "timeout": 60
+      }
+    ],
     "postToolUse": [
       {
         "command": "./scripts/hook.sh changelog",

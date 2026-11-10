@@ -1,5 +1,41 @@
 # Changelog
 
+## [0.1.12] - 10-11-2026
+
+- feat(devops): new fuse-devops plugin at 1.0.0 — `devops-expert` agent + 18
+  skills, no hooks, registered in `.cursor-plugin/marketplace.json` —
+  marketplace now lists 26 plugins (was 25); fuse-rules project detection gains
+  the infrastructure-repo row routing to `fuse-devops:devops-expert`
+- feat(harness): atomic session-start auto-update to `@fusengine/harness`
+  >= 0.1.115 — staged `bun add` into `versions/<ver>`, verified, `current`
+  swapped by one rename, old version kept; zero process when current; back-off
+  `FUSE_HARNESS_UPDATE_BACKOFF_MIN` (30) written before staging; mkdir
+  single-flight lock; install bound `FUSE_HARNESS_INSTALL_TIMEOUT_SEC` (45);
+  `--session-start` on 5 plugins, upgrade-only `--harness-check` on the 17
+  others; installer delegates to `hook.sh --install-harness`
+- fix(harness): fail-open when the shared control root is not writable — the
+  installed harness keeps running, no install is attempted
+- test(harness): `harness-autoupdate`, `harness-swap-atomic`, opt-in
+  `harness-autoupdate-real`
+- fix(test): `harness-swap-atomic` waits for the swap event instead of a fixed
+  sleep and asserts the pointer and the live binary version (CI-robust)
+- fix(harness): installer failure warning no longer prints `retry in - min`;
+  installer-specific wording
+- fix(verify): `verify.sh` JSON hygiene scans git-tracked files only; home
+  references removed from `.cursor-plugin/harness/package.json` and
+  `.cursor-plugin/mcp/catalog.json` (`${userHome}` / `${env:VAR}` per Cursor
+  MCP docs); `docs/harness-cursor-fix-prompt.md` condensed to 157 lines —
+  `verify.sh --repository-only` 39 PASS / 0 FAIL
+- chore(plugins): PATCH bump, mirrored in `.cursor-plugin/marketplace.json` —
+  core-guards 1.1.40, fuse-ai-pilot 1.2.47, fuse-cartographer 1.0.15,
+  fuse-changelog 1.0.17, fuse-design 2.2.12, fuse-go 1.0.9, fuse-hermes 1.0.1,
+  fuse-laravel 1.2.11, fuse-lessons 1.0.9, fuse-nextjs 1.1.27, fuse-php 1.0.10,
+  fuse-react 1.0.24, fuse-rules 1.0.26, fuse-rust 1.0.10, fuse-security 1.0.21,
+  fuse-seo 1.0.15, fuse-shadcn-ui 1.0.21, fuse-solid 1.0.22,
+  fuse-swift-apple-expert 1.1.23, fuse-tailwindcss 1.1.14,
+  fuse-tanstack-start 1.0.8, fuse-typescript 1.0.10
+- chore(marketplace): suite `metadata.version` 0.1.11 → 0.1.12, README version badge updated
+
 ## [0.1.11] - 10-11-2026
 
 - feat(security): port the claude-plugins security plugin refresh (v1.39.47) —

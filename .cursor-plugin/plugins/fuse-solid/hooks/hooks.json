@@ -3,8 +3,8 @@
   "hooks": {
     "sessionStart": [
       {
-        "command": "./scripts/hook.sh solid",
-        "timeout": 5
+        "command": "./scripts/hook.sh --session-start solid",
+        "timeout": 60
       }
     ],
     "preToolUse": [

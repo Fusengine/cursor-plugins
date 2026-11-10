@@ -16,9 +16,8 @@ export interface SetupPaths {
 	 */
 	pluginsDir: string;
 	/**
-	 * Repo manifest of the shared harness (`.cursor-plugin/harness/package.json`,
-	 * spec `latest`). Copied to `~/.cursor/.fusengine-global/package.json` and
-	 * refreshed on every install run.
+	 * Repo `scripts/hook.sh` that owns the staged harness install and atomic
+	 * switch (`--install-harness`); run on every install to refresh the harness.
 	 */
-	harnessManifestSrc: string;
+	harnessHookScript: string;
 }
