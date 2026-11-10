@@ -319,6 +319,8 @@ new_case; seed_current 0.1.110; STUB_ADD_RC=1
 hook --install-harness > "$T/out" 2> "$T/err"; rc=$?
 check "install-harness failure: rc 1" eq "$rc" 1
 check "install-harness failure: one warning line, stdout empty" eq "$(wc -l < "$T/err" | tr -d ' ').$(wc -c < "$T/out" | tr -d ' ')" 1.0
+check "install-harness failure: warning text, no 'retry in -'" \
+  bash -c 'grep -q "installed 0.1.110, target >= 0.1.115" "$1" && grep -q "re-run the installer to retry" "$1" && ! grep -q "retry in -" "$1"' _ "$T/err"
 reset_env
 
 # 24. Install bound stays under Cursor's 60 s default hook timeout.

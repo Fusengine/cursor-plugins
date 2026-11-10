@@ -17,6 +17,15 @@
   installed harness keeps running, no install is attempted
 - test(harness): `harness-autoupdate`, `harness-swap-atomic`, opt-in
   `harness-autoupdate-real`
+- fix(test): `harness-swap-atomic` waits for the swap event instead of a fixed
+  sleep and asserts the pointer and the live binary version (CI-robust)
+- fix(harness): installer failure warning no longer prints `retry in - min`;
+  installer-specific wording
+- fix(verify): `verify.sh` JSON hygiene scans git-tracked files only; home
+  references removed from `.cursor-plugin/harness/package.json` and
+  `.cursor-plugin/mcp/catalog.json` (`${userHome}` / `${env:VAR}` per Cursor
+  MCP docs); `docs/harness-cursor-fix-prompt.md` condensed to 157 lines —
+  `verify.sh --repository-only` 39 PASS / 0 FAIL
 - chore(plugins): PATCH bump, mirrored in `.cursor-plugin/marketplace.json` —
   core-guards 1.1.40, fuse-ai-pilot 1.2.47, fuse-cartographer 1.0.15,
   fuse-changelog 1.0.17, fuse-design 2.2.12, fuse-go 1.0.9, fuse-hermes 1.0.1,

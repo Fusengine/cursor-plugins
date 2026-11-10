@@ -2,7 +2,7 @@
   "name": "@fusengine/cursor-harness",
   "version": "1.0.0",
   "private": true,
-  "description": "Fusengine Cursor global harness vendor manifest - single shared install of @fusengine/harness under ~/.cursor/.fusengine-global/node_modules, always tracking the latest published release.",
+  "description": "Fusengine Cursor global harness vendor manifest - single shared install of @fusengine/harness under the user-level .cursor/.fusengine-global/node_modules, always tracking the latest published release.",
   "dependencies": {
     "@fusengine/harness": "latest"
   }

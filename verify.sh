@@ -226,7 +226,16 @@ if (matchers.length && mcpOk === matchers.length) P('no matcher uses the Claude 
 
 // ------------------------------------------------------- 4. JSON path hygiene
 H('4. JSON hygiene (portability)');
-const jsonFiles = collect(ROOT, (n) => n.endsWith('.json'));
+// Scope = what ships: git-tracked plus untracked-but-not-ignored files, so gitignored
+// tool caches (.harness/, node_modules) are not scanned. Outside a git checkout, fall
+// back to walking the working tree.
+function shippedJson() {
+  try {
+    const out = require('child_process').execFileSync('git', ['-C', ROOT, 'ls-files', '-co', '--exclude-standard', '-z', '--', '*.json'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    return out.split('\0').filter(Boolean).map((r) => path.join(ROOT, r)).filter((p) => fs.existsSync(p));
+  } catch (e) { return null; }
+}
+const jsonFiles = shippedJson() || collect(ROOT, (n) => n.endsWith('.json'));
 const hits = [];
 const HOOK_SET = {};
 for (const f of hookFiles) HOOK_SET[f] = true;

@@ -238,9 +238,10 @@ upgrade_stale() {
 
 # One line on stderr (stdout is the hook's JSON), shown in Cursor's Hooks panel;
 # the back-off stamp keeps it to one per window.
-warn_failed() { # installed-version retry-minutes
-  printf 'fusengine harness: upgrade failed (installed %s, target >= %s, staged %s); keeping the installed version, retry in %s min\n' \
-    "${1:-unknown}" "$HARNESS_MIN" "${NEWV:-none}" "$2" >&2
+warn_failed() { # installed-version retry-minutes ("-" = no automatic retry, installer path)
+  _rt="retry in $2 min"; [ "$2" = "-" ] && _rt="re-run the installer to retry"
+  printf 'fusengine harness: upgrade failed (installed %s, target >= %s, staged %s); keeping the installed version, %s\n' \
+    "${1:-unknown}" "$HARNESS_MIN" "${NEWV:-none}" "$_rt" >&2
 }
 
 # --install-harness: installer entry. Staged install, bypassing back-off.
