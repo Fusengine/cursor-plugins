@@ -1,6 +1,12 @@
 {
   "version": 1,
   "hooks": {
+    "sessionStart": [
+      {
+        "command": "./scripts/hook.sh --harness-check",
+        "timeout": 60
+      }
+    ],
     "subagentStart": [
       {
         "command": "./scripts/hook.sh aipilot"

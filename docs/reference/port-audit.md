@@ -20,8 +20,9 @@ maintainers, not installation guidance.
 - MCP matchers use `MCP:<tool>` rather than the `mcp__<server>__<tool>` source form.
 - Empty matchers are omitted.
 - Hook commands invoke each plugin's own relative `./scripts/hook.sh`, which resolves the harness
-  itself (vendored binary → self-heal `bun install` → `npx -y @fusengine/harness hook cursor` as
-  last resort); this is runtime, not installation.
+  itself (vendored binary → staged self-heal install with an atomic switch → `npx -y
+  @fusengine/harness hook cursor` as last resort, plus a staged session-start upgrade below
+  `HARNESS_MIN`); this is runtime, not installation.
 - Cursor-native events must live in Cursor-native hook files rather than compatibility-shaped files.
 
 ## Path invariants

@@ -25,7 +25,7 @@
     ],
     "sessionStart": [
       {
-        "command": "./scripts/hook.sh"
+        "command": "./scripts/hook.sh --session-start"
       }
     ],
     "beforeSubmitPrompt": [

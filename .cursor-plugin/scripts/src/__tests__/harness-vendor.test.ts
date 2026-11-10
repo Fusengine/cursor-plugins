@@ -1,96 +1,94 @@
 /**
- * Tests for vendorHarness: the installer must always refresh the shared
- * `@fusengine/harness` to the latest release, never leave a pinned spec, and
- * never throw. The real `bun` is never invoked — every test injects a fake.
+ * Tests for vendorHarness: the installer delegates the staged install to
+ * `hook.sh --install-harness`, targeting the given control root, and never
+ * throws. No script is ever executed — every test injects a fake runner.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import type { BunRunFn } from "../interfaces/harness-vendor";
+import type { ScriptRunFn } from "../interfaces/harness-vendor";
 import { vendorHarness } from "../services/harness-vendor";
 
-const MANIFEST = `${JSON.stringify({
-	name: "@fusengine/cursor-harness",
-	private: true,
-	dependencies: { "@fusengine/harness": "latest" },
-})}\n`;
-const BIN = "node_modules/@fusengine/harness/dist/cli/bin.mjs";
-
 let root: string;
-let manifestSrc: string;
+let hookScript: string;
 let controlRoot: string;
 
-/** Fake runner recording every call and answering with scripted exit codes. */
-function fakeRun(codes: number[]): { run: BunRunFn; calls: string[][] } {
-	const calls: string[][] = [];
-	const run: BunRunFn = async (_cwd, args) => {
-		calls.push(args);
-		return codes[calls.length - 1] ?? 0;
+type Call = { script: string; args: string[]; env: Record<string, string> };
+
+/** Fake runner recording every call and answering with a scripted exit code. */
+function fakeRun(code: number): { run: ScriptRunFn; calls: Call[] } {
+	const calls: Call[] = [];
+	const run: ScriptRunFn = async (script, args, env) => {
+		calls.push({ script, args, env });
+		return { code, stderr: code === 0 ? "" : "fusengine harness: upgrade failed (installed 0.1.110)" };
 	};
 	return { run, calls };
 }
 
-/** Simulate an earlier install: pinned manifest, lockfile and vendored bin. */
-function seedPinnedInstall(): void {
-	mkdirSync(join(controlRoot, "node_modules/@fusengine/harness/dist/cli"), { recursive: true });
-	writeFileSync(join(controlRoot, BIN), "// old bin");
-	writeFileSync(join(controlRoot, "bun.lock"), "{}");
-	writeFileSync(
-		join(controlRoot, "package.json"),
-		'{"dependencies":{"@fusengine/harness":"0.1.100"}}',
-	);
-}
-
 beforeEach(() => {
 	root = mkdtempSync(join(tmpdir(), "fusengine-vendor-"));
-	manifestSrc = join(root, "manifest.json");
+	hookScript = join(root, "hook.sh");
 	controlRoot = join(root, ".fusengine-global");
-	writeFileSync(manifestSrc, MANIFEST);
+	writeFileSync(hookScript, "#!/bin/sh\n");
 });
 
 afterEach(() => rmSync(root, { recursive: true, force: true }));
 
 describe("vendorHarness", () => {
-	test("fresh machine: writes the `latest` manifest and runs bun install", async () => {
-		const { run, calls } = fakeRun([0]);
-		expect(await vendorHarness({ manifestSrc, controlRoot, run })).toBe("installed");
-		expect(readFileSync(join(controlRoot, "package.json"), "utf8")).toBe(MANIFEST);
-		expect(calls).toEqual([["install", "--silent"]]);
+	test("fresh machine: runs hook.sh --install-harness against the control root", async () => {
+		const { run, calls } = fakeRun(0);
+		expect(await vendorHarness({ hookScript, controlRoot, run })).toBe("installed");
+		expect(calls).toEqual([
+			{ script: hookScript, args: ["--install-harness"], env: { FUSE_HARNESS_ROOT: controlRoot } },
+		]);
 	});
 
-	test("pinned earlier install: manifest reset to `latest`, then bun update of the harness only", async () => {
-		seedPinnedInstall();
-		const { run, calls } = fakeRun([0]);
-		expect(await vendorHarness({ manifestSrc, controlRoot, run })).toBe("updated");
-		expect(readFileSync(join(controlRoot, "package.json"), "utf8")).toBe(MANIFEST);
-		expect(calls).toEqual([["update", "@fusengine/harness", "--silent"]]);
+	test("existing versioned install: reported as updated", async () => {
+		mkdirSync(controlRoot, { recursive: true });
+		writeFileSync(join(controlRoot, "current"), "0.1.110\n");
+		const { run } = fakeRun(0);
+		expect(await vendorHarness({ hookScript, controlRoot, run })).toBe("updated");
 	});
 
-	test("update fails (package absent from the lock): falls back to bun install", async () => {
-		seedPinnedInstall();
-		const { run, calls } = fakeRun([1, 0]);
-		expect(await vendorHarness({ manifestSrc, controlRoot, run })).toBe("installed");
-		expect(calls.map((c) => c[0])).toEqual(["update", "install"]);
+	test("existing legacy node_modules install: reported as updated", async () => {
+		const bin = join(controlRoot, "node_modules/@fusengine/harness/dist/cli");
+		mkdirSync(bin, { recursive: true });
+		writeFileSync(join(bin, "bin.mjs"), "// old");
+		const { run } = fakeRun(0);
+		expect(await vendorHarness({ hookScript, controlRoot, run })).toBe("updated");
 	});
 
-	test("every bun run fails: reports failed, does not throw", async () => {
-		seedPinnedInstall();
-		const { run } = fakeRun([1, 1]);
-		expect(await vendorHarness({ manifestSrc, controlRoot, run })).toBe("failed");
+	test("script exits non-zero: reports failed, does not throw", async () => {
+		const { run } = fakeRun(1);
+		expect(await vendorHarness({ hookScript, controlRoot, run })).toBe("failed");
+	});
+
+	test("script fails: its stderr line is surfaced through warn", async () => {
+		const { run } = fakeRun(1);
+		const messages: string[] = [];
+		await vendorHarness({ hookScript, controlRoot, run, warn: (m) => messages.push(m) });
+		expect(messages).toEqual(["fusengine harness: upgrade failed (installed 0.1.110)"]);
+	});
+
+	test("script succeeds: warn is never called", async () => {
+		const { run } = fakeRun(0);
+		const messages: string[] = [];
+		await vendorHarness({ hookScript, controlRoot, run, warn: (m) => messages.push(m) });
+		expect(messages).toEqual([]);
 	});
 
 	test("runner throws: fail-open, reports failed", async () => {
-		const run: BunRunFn = async () => {
+		const run: ScriptRunFn = async () => {
 			throw new Error("spawn failed");
 		};
-		expect(await vendorHarness({ manifestSrc, controlRoot, run })).toBe("failed");
+		expect(await vendorHarness({ hookScript, controlRoot, run })).toBe("failed");
 	});
 
-	test("missing repo manifest: skipped, bun never called, nothing written", async () => {
-		rmSync(manifestSrc);
-		const { run, calls } = fakeRun([0]);
-		expect(await vendorHarness({ manifestSrc, controlRoot, run })).toBe("skipped");
+	test("missing hook.sh: skipped, runner never called", async () => {
+		rmSync(hookScript);
+		const { run, calls } = fakeRun(0);
+		expect(await vendorHarness({ hookScript, controlRoot, run })).toBe("skipped");
 		expect(calls).toEqual([]);
 	});
 });

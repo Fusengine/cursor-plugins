@@ -8,7 +8,7 @@
     ],
     "sessionStart": [
       {
-        "command": "./scripts/hook.sh lessons"
+        "command": "./scripts/hook.sh --session-start lessons"
       }
     ],
     "subagentStart": [

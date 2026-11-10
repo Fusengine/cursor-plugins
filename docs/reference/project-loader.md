@@ -75,8 +75,9 @@ Individual plugins carry `hooks/hooks.json`. Their commands invoke:
 ```
 
 Each plugin ships that wrapper. It resolves the harness itself, in order: the shared vendored
-install under `$HOME/.cursor/.fusengine-global`, then a one-shot self-heal `bun install` of that
-same directory, then pinned `npx` as a last resort. The path stays relative to the plugin, as the
+install under `$HOME/.cursor/.fusengine-global` (the version named by `current`), then a one-shot
+self-heal that stages a `latest` install and switches to it atomically, then `npx` on `latest` as a
+last resort. At session start it also upgrades a version below `HARNESS_MIN` the same staged way. The path stays relative to the plugin, as the
 Cursor submission checklist requires, and the plugin therefore works when installed from the
 marketplace, where no installer ever runs.
 
