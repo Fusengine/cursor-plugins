@@ -1,5 +1,19 @@
 # Changelog
 
+## [Unreleased]
+
+- feat(solid-swift): add `references/state-machines.md` (sum-type state
+  modeling, `LoadState<Value>` with a `Sendable` + `Equatable` `LoadFailure`,
+  Tier 2 transition functions) and move the `viewmodel.md` / `view.md`
+  templates from `isLoading` booleans to `state: LoadState<…>`; align the
+  `concurrency-patterns`, `dependency-inversion` and `single-responsibility`
+  examples; adapted from the `coreyfloyd/agents` fork, credit to coreyfloyd
+  (https://github.com/coreyfloyd/agents) (fuse-swift-apple-expert)
+- docs(decisions): decisions journal records the 2026-11-13 "Swift state
+  modeling port" owner decision
+- Not verified: real Cursor run — `cursor-agent` usage limit reached
+  (2026-11-13 attempt BLOCKED, no Swift produced)
+
 ## [0.1.18] - 16-11-2026
 
 - fix(lead): the per-project roadmap and project skill are written only in

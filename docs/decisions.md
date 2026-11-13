@@ -2,6 +2,8 @@
 
 Owner decisions for this repository, dated. Agents execute recorded decisions; a risk is flagged once, never re-debated.
 
+- **2026-11-13 — Swift state modeling port.** Owner: « Oui, porte le Swift » then « tu le porte sur les autre aussi ». The `solid-swift` skill gains `references/state-machines.md` and the `LoadState<Value>` templates, adapted from the `coreyfloyd/agents` fork (credit in CHANGELOG). Not ported: the fork's "de-fuse" commit and its Python additions.
+
 - **2026-11-11 — Plugin license holder.** Owner, told that `fuse-commit-pro/LICENSE` read `Copyright (c) 2025 Bruno Azoulay`: « non fusengine Sàrl ». Every `Copyright (c)` line in the repository names `Fusengine Sàrl` (year unchanged).
 - **2026-11-11 — Copyright holder.** Owner, asked who the legal holder is: « Fusengine Sàrl ». Every `Copyright (c) … Fusengine` line reads `Copyright (c) 2026 Fusengine Sàrl` (UTF-8); `author` fields and prose are unchanged.
 - **2026-11-11 — License.** Owner: « met les licences sous harnes kimi codex claude cursor ». The repository ships the MIT License text of `@fusengine/harness` in a root `LICENSE` (holder per the entry above), so any copy must keep the Fusengine Sàrl copyright notice. Plugin manifests and `marketplace.json` already declare `"license": "MIT"`; no new manifest field is added.

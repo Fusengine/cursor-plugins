@@ -5,7 +5,7 @@ versions:
   swift: "6.4.2"
   ios: "27.2"
 user-invocable: true
-references: references/solid-principles.md, references/single-responsibility.md, references/open-closed.md, references/liskov-substitution.md, references/interface-segregation.md, references/dependency-inversion.md, references/concurrency-patterns.md, references/anti-patterns.md, references/templates/view.md, references/templates/viewmodel.md, references/templates/service.md, references/templates/protocol.md, references/templates/model.md
+references: references/solid-principles.md, references/single-responsibility.md, references/open-closed.md, references/liskov-substitution.md, references/interface-segregation.md, references/dependency-inversion.md, references/concurrency-patterns.md, references/state-machines.md, references/anti-patterns.md, references/templates/view.md, references/templates/viewmodel.md, references/templates/service.md, references/templates/protocol.md, references/templates/model.md
 related-skills: swift-core, swiftui-core, ios, macos, ipados, watchos, visionos, tvos
 ---
 
@@ -81,6 +81,7 @@ File size: the only line limit is the hook ceiling (`FUSE_SOLID_MAX_LINES`). Spl
 | **ISP** | [interface-segregation.md](references/interface-segregation.md) | Fat protocols, splitting |
 | **DIP** | [dependency-inversion.md](references/dependency-inversion.md) | Injection, testing, mocking |
 | **Concurrency** | [concurrency-patterns.md](references/concurrency-patterns.md) | Actors, @MainActor, Sendable |
+| **State modeling** | [state-machines.md](references/state-machines.md) | Boolean soup, `LoadState`, transitions |
 | **Anti-Patterns** | [anti-patterns.md](references/anti-patterns.md) | Code smells detection |
 
 ### Templates
