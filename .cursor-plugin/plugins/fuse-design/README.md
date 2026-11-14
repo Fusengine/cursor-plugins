@@ -9,9 +9,15 @@ Compose code: they produce tokens, an HTML device-framed mockup, and a handoff s
 **Zero tolerance for generic "AI slop" aesthetics** — see the anti-slop clusters in
 `skills/design-method/SKILL.md`.
 
-Ported from the Claude Code plugin `fuse-design` v2.2.7 (source folder `plugins/design-expert/`).
+Ported from the Claude Code plugin `fuse-design` v2.3.0 (source folder `plugins/design-expert/`).
 The plugin name is deliberately identical across both ecosystems so cross-plugin references
 (`fuse-design:<skill>`, and the agent's own `fuse-ai-pilot:fuse-browser-usage`) keep resolving.
+
+Port note 2026-11-14: the source change `fd4f8c5e..a6a25857` was ported for `design-ios` only: six new
+references (`app-icons`, `app-store-assets`, `apple-design-tools`, `bars-menus-scroll`,
+`generative-ai`, `system-surfaces`) plus the updated `SKILL.md`, `dynamic-type`, `ipados-iphone-duo`,
+`macos` and `watch-tv-vision` references, all byte-identical to the source, and the README's
+`design-ios` row now reads "Apple-platform mockup + handoff".
 
 ## Contents
 
@@ -48,7 +54,7 @@ All design work starts in `skills/design-method/SKILL.md`:
 | `design-system` | OKLCH tokens, typography, spacing, motion profile, the canonical forbidden-fonts list, the mechanical contrast-check step |
 | `design-web` | Marketing sites and landing pages — inspiration browsing (FULL/PAGE scope only), component generation, premium layout patterns, hard layout-discipline rules |
 | `design-webapp` | Dashboards, auth, settings, onboarding, data tables, command palettes — density and state coverage over marketing polish |
-| `design-ios` | iOS mockup + handoff — Dynamic Type, semantic colors, device viewports, Liquid Glass, SwiftUI-ready spec |
+| `design-ios` | Apple-platform mockup + handoff — Dynamic Type, semantic colors, device viewports, Liquid Glass, touch on Mac, bars/menus/scroll, system surfaces, app icons, App Store assets, generative AI, Apple design tools, SwiftUI-ready spec |
 | `design-android` | Android mockup + handoff — Material 3 Expressive type/shape/color scales, window size classes, Compose-ready spec |
 | `design-motion` | Motion gated by the `MOTION_INTENSITY` dial — most animation ideas die at the gate; mandatory hover/focus/disabled states and `prefers-reduced-motion` regardless |
 | `ux-copy` | Voice/tone, CTAs, error messages, empty states, the copy self-audit (em-dash crutch check, production-tell catalogue) |
