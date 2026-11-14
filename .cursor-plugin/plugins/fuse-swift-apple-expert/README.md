@@ -1,9 +1,9 @@
 # fuse-swift-apple-expert (Cursor Plugin)
 
-Expert Swift 6.2 + SwiftUI for iOS 26, macOS 26, iPadOS 26, watchOS 26, visionOS 26 and tvOS 26 —
+Expert Swift 6.4.2 + SwiftUI (Xcode 27.2) for iOS 27.2, macOS 27.2, iPadOS 27.2, watchOS 27.2, visionOS 27.2 and tvOS 27.2 —
 Liquid Glass, `@Observable`, actors, SwiftData inheritance.
 
-Ported from the Claude Code plugin `fuse-swift-apple-expert` v1.1.17 (source folder
+Ported from the Claude Code plugin `fuse-swift-apple-expert` v1.2.0 (source folder
 `plugins/swift-apple-expert`). The plugin name is deliberately identical across both ecosystems so
 cross-plugin references (`fuse-swift-apple-expert:<skill>`) keep resolving.
 
@@ -12,7 +12,7 @@ cross-plugin references (`fuse-swift-apple-expert:<skill>`) keep resolving.
 | Component | Count | Cursor discovery |
 | :-- | :-- | :-- |
 | Agents (subagents) | 1 | `agents/*.md` |
-| Skills | 11 | `skills/<name>/SKILL.md` |
+| Skills | 15 | `skills/<name>/SKILL.md` |
 | Hooks | 2 events | `hooks/hooks.json` |
 
 No `commands/` and no `docs/` folder: the source plugin has neither. An empty component folder
@@ -22,16 +22,20 @@ would be a divergence, not a precaution (R4–R6 / R8–R10 preamble).
 
 | Skill | Description |
 | :-- | :-- |
-| `swift-core` | Swift 6 fundamentals — concurrency, architecture, testing, i18n, performance — across any Apple platform |
-| `swiftui-core` | SwiftUI views, navigation, persistence, state management, Liquid Glass, and HIG rules (accessibility, RTL, modality, widgets/Live Activities/notifications/Siri, iPhone Duo) — shared across iOS, macOS, watchOS, visionOS |
-| `ios` | iPhone apps — simulator/device testing, UI automation, debugging — with XcodeBuildMCP tools |
-| `ipados` | iPad apps — split views, external keyboard support, multitasking, Stage Manager, adaptive layouts |
-| `macos` | Mac apps — menu bar extras, window management, AppKit integration, notarized distribution |
+| `swift-core` | Swift Testing first, Swift 6.2 concurrency defaults, architecture, i18n, performance, Xcode 27 agents and `xcrun mcpbridge` — across any Apple platform |
+| `swiftui-core` | SwiftUI views, navigation, SwiftData 27, WebView, state, Liquid Glass, App Intents runtime, WidgetKit/ActivityKit, and HIG rules (accessibility, RTL, modality, notifications/Siri, iPhone Duo) — shared across iOS, macOS, watchOS, visionOS |
+| `ios` | iPhone apps — simulator/device testing, UI automation, debugging — with XcodeBuildMCP tools; UIKit 26-27 |
+| `ipados` | iPad apps — split views, external keyboard support, multitasking, Stage Manager, menu bar, toolbars, adaptive layouts |
+| `macos` | Mac apps — menu bar extras, window management, toolbars, touch on Mac, AppKit integration, notarized distribution |
 | `watchos` | Apple Watch apps — complications, workouts, HealthKit, iPhone-Watch connectivity |
-| `visionos` | Vision Pro apps — spatial computing, RealityKit 3D content, immersive spaces, volumes |
+| `visionos` | Vision Pro apps — spatial computing, RealityKit 27, ARKit, spatial web, ornaments, immersive spaces, volumes (no eye-tracking API) |
 | `tvos` | Apple TV apps — focus-based navigation, Siri Remote interactions, media/video streaming UI |
-| `mcp-tools` | Xcode build automation and Apple API/WWDC documentation lookup via XcodeBuildMCP and apple-docs MCP servers; UI verification on simulator |
-| `build-distribution` | Apple releases — code signing, TestFlight upload, App Store submission, Icon Composer app icons, CI |
+| `apple-intelligence` | Foundation Models (on-device and Private Cloud Compute), Writing Tools, Genmoji, Image Playground, Visual Intelligence |
+| `apple-frameworks` | Passkeys, MapKit, CloudKit, Core Data, TipKit, background tasks, MetricKit, App Attest, HealthKit, CarPlay, Chart3D |
+| `graphics-games` | Metal 4, MetalFX, GameKit, Game Controller, Game Porting Toolkit 4; Metal vs RealityKit vs SpriteKit vs SceneKit |
+| `media-vision` | AVFoundation, Now Playing, PhotoKit, Vision, Speech, translation, Core ML, Core Location, WeatherKit, EventKit |
+| `mcp-tools` | Xcode build automation and Apple API/WWDC documentation lookup via XcodeBuildMCP and apple-docs MCP servers; UI verification on simulator; Xcode 27 agents and Xcode's MCP server |
+| `build-distribution` | Apple releases — code signing, TestFlight upload, App Store submission, Icon Composer app icons, StoreKit 2, CI; deadlines: Developer ID G2 2027-02-01, age-rating declarations 2027-01-12, April 2027 SDK 27 / iOS 15 / iPhone Duo screenshots |
 | `solid-swift` | SOLID for Swift 6/SwiftUI — hook size ceiling (`FUSE_SOLID_MAX_LINES`), protocol separation, `@Observable`, actors, feature-modular architecture |
 
 SOLID guidance is **local** here (`solid-swift`), not delegated to `fuse-solid`.
@@ -41,6 +45,8 @@ SOLID guidance is **local** here (`solid-swift`), not delegated to `fuse-solid`.
 The agent activates when `Package.swift` or an `*.xcodeproj` is detected — iOS/macOS/watchOS/
 visionOS/tvOS apps, SwiftUI views, Swift concurrency, XcodeBuildMCP automation. Not for web
 frontend, Laravel/PHP, or non-Apple platforms.
+
+Routing examples: "Add a Foundation Models summary feature" -> `apple-intelligence`; "Render with Metal 4 and MetalFX upscaling" -> `graphics-games`; passkeys, MapKit, CloudKit, TipKit, background tasks, HealthKit, CarPlay -> `apple-frameworks`; camera capture, Now Playing, PhotoKit, Vision, Speech, Core Location -> `media-vision`.
 
 For UI changes the agent runs a 10-item HIG gate on the simulator (Dynamic Type AX5, dark mode + Increase Contrast, VoiceOver labels, hit targets, RTL, Reduce Motion/Transparency, Liquid Glass, screen sizes, modality/order), each reported `pass` / `fail` / `not verified`, before `sniper`.
 
@@ -83,17 +89,26 @@ declares no `mcpServers` of its own; it did not in the source either.
 
 ### Skills
 
-All 11 satisfy Cursor's hard rule that `name:` equals the parent folder name (R9). `references/` and
+All 15 satisfy Cursor's hard rule that `name:` equals the parent folder name (R9). `references/` and
 nested `references/templates/` folders are natively supported and were copied verbatim in the
 initial port. On 2026-10-12 the source's uncommitted working-tree improvements were ported on top
 (HIG references, mcp-tools workflows, tvOS/watchOS/visionOS/build-distribution updates), so
-`diff -rq` against the source is no longer empty. Target-only deviations kept on purpose: the
+`diff -rq` against the source is no longer empty. On 2026-11-14 the source change `fd4f8c5e..a6a25857`
+(v1.2.0) was ported: four new skills (`apple-intelligence`, `apple-frameworks`, `graphics-games`,
+`media-vision`), 49 other new reference files, and updated SKILL.md/references; every reference file
+changed in source range `fd4f8c5e..a6a25857` is byte-identical to the source except
+`mcp-tools/references/xcode-agents.md`, the one adapted reference (Cursor `mcp.json` registration
+first, Apple's `claude mcp add` / `codex mcp add` kept on one line, `AGENTS.md` / `.cursor/rules`
+instead of `CLAUDE.md`). Target-only deviations kept on purpose: in `mcp-tools/SKILL.md` and
+the agent body, the Xcode
+MCP connection line says "register a stdio MCP server `xcode` in Cursor's MCP settings" instead of
+Claude's `claude mcp add` command; the
 `Task`-based wording (instead of Claude's `Agent`-with-`name`) in the SKILL.md "Agent Workflow" sections, the `FUSE_SOLID_MAX_LINES` rewrite of
 `solid-swift`, the same ceiling wording in `swiftui-core` (no "30+ lines" view cap), this README's port notes, and the Cursor frontmatter of the agent.
 
 Frontmatter keys preserved verbatim, absent from Cursor's documented skill schema and **not
 verified against the binary**, so their status is unknown rather than unsupported (R7/R19):
-`references` (11), `related-skills` (11), `user-invocable` (11), `versions` (10).
+`references` (15), `related-skills` (15), `user-invocable` (15), `versions` (14).
 
 `user-invocable` was **not** translated to `disable-model-invocation` (R8). They are near-opposites:
 Cursor's `disable-model-invocation: true` means "only reachable via `/skill-name`", whereas Claude
@@ -154,7 +169,7 @@ declares **no scope argument**, and that absence is preserved exactly: nothing i
 ## Runtime paths
 
 This plugin references no `.claude/…` runtime state path in the body of any skill or agent (0
-occurrences across 11 skills and 1 agent). There is nothing for the harness to resolve, so R21's
+occurrences across 15 skills and 1 agent). There is nothing for the harness to resolve, so R21's
 clause is deliberately not reproduced here: on a plugin with zero occurrences it would assert
 something false.
 
