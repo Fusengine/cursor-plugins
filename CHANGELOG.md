@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.1.14] - 14-11-2026
+
+- docs(swift-apple-expert): Apple OS 27 skills ported from claude-plugins
+  v1.40.0 (iOS/iPadOS/macOS/watchOS/visionOS/tvOS 27.2, Xcode 27.2,
+  Swift 6.4.2) — 4 new skills `apple-intelligence`, `apple-frameworks`,
+  `graphics-games`, `media-vision`; 10 skills updated (`build-distribution`,
+  `ios`, `ipados`, `macos`, `mcp-tools`, `swift-core`, `swiftui-core`, `tvos`,
+  `visionos`, `watchos`) and the `swift-expert` agent updated
+- docs(design): `design-ios` skill updated to Apple OS 27.2, new references
+  `app-icons`, `app-store-assets`, `apple-design-tools`, `bars-menus-scroll`,
+  `generative-ai`, `system-surfaces`
+- docs(cursor): Cursor adaptations of the port — `Agent` → `Task`, `mcp.json`
+  in `type: stdio` form, `xcode-agents.md` adapted
+- docs(readme): fuse-swift-apple-expert and fuse-design READMEs updated;
+  fuse-swift-apple-expert marketplace description updated to Swift 6.4.2 /
+  Xcode 27.2 / OS 27.2
+- chore(plugins): PATCH bump, mirrored in `.cursor-plugin/marketplace.json` —
+  fuse-design 2.2.14, fuse-swift-apple-expert 1.1.25
+- chore(marketplace): suite `metadata.version` 0.1.13 → 0.1.14, README version badge updated
+- Not verified: real Cursor run — cursor-agent Free quota exhausted
+  ('You've hit your usage limit')
+
 ## [0.1.13] - 11-11-2026
 
 - chore(harness): shared harness minimum raised to `@fusengine/harness`

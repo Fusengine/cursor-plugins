@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Professional Cursor plugins with APEX workflow, SOLID principles, and expert development agents for Next.js, Laravel, Swift, Tailwind CSS, and more",
-    "version": "0.1.13"
+    "version": "0.1.14"
   },
   "plugins": [
     {
@@ -145,7 +145,7 @@
       "name": "fuse-design",
       "source": ".cursor-plugin/plugins/fuse-design",
       "description": "Design Director for websites, web apps, iOS, and Android. Generates HTML/CSS directly (Gemini Design MCP, Magic/21st.dev, and shadcn MCP are optional). iOS/Android produce tokens + a device-framed mockup + a handoff spec, never SwiftUI/Compose. Design method, design system tokens, motion, UX copy, and a deterministic design-review gate. Anti-AI-Slop, WCAG 2.2.",
-      "version": "2.2.13",
+      "version": "2.2.14",
       "author": {
         "name": "Fusengine",
         "email": "hello@fusengine.ch"
@@ -535,7 +535,7 @@
       "name": "fuse-swift-apple-expert",
       "source": ".cursor-plugin/plugins/fuse-swift-apple-expert",
       "description": "Expert Swift 6.4.2 + SwiftUI (Xcode 27.2) for iOS 27.2, macOS 27.2, iPadOS 27.2, watchOS 27.2, visionOS 27.2, tvOS 27.2 with Liquid Glass, @Observable, actors, SwiftData inheritance",
-      "version": "1.1.24",
+      "version": "1.1.25",
       "author": {
         "name": "Fusengine",
         "email": "hello@fusengine.ch"
