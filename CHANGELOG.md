@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.1.15] - 15-11-2026
+
+- docs(decisions): decisions journal records the 2026-11-15 "Relayed go"
+  rule — an owner go given to the lead counts for the sessions that lead
+  started when the lead quotes the owner's exact words (release, real run,
+  install); it replaces the 2026-11-10 "Releases" rule (go typed in this
+  repository's lead session only)
+- docs(decisions): decisions journal records the 2026-11-15 "Commit cycle"
+  rule — « commit cycle », in any language, means the full cycle through the
+  commit agent (commit, push, PR, CI, merge never squash, tag, release) with
+  no owner intervention
+- chore(marketplace): suite `metadata.version` 0.1.14 → 0.1.15, README version
+  badge updated; no plugin version bumped (no plugin content changed)
+- Docs-only change: no real Cursor run needed
+
 ## [0.1.14] - 14-11-2026
 
 - docs(swift-apple-expert): Apple OS 27 skills ported from claude-plugins
