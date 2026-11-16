@@ -56,9 +56,9 @@ N. Negative -- `git diff --stat` shows no change under X
 - Cursor has no peer messaging: for a contract or interface change, a result you wait for, or a file a peer owns (never edit it), say so in your report to the lead, who relays by resuming the peer.
 - Shared resource owner (build, simulator, server): <name>
 
-## PRD ASSIGNMENT (only when FUSE_PRD=1 and the mandate has 2+ agents; see prd.md)
+## PRD ASSIGNMENT (only when FUSE_PRD=1 and the mandate WRITES files with 2+ agents; never in a read-only mandate; see prd.md)
 Task: <task-id>. You are `<agent name>`. Your files: <files>. Your sub-tasks: <sub1, sub2>.
-When done, write ONLY `.cursor/apex/prd/agents/<agent name>-prd.json` (Write tool): { "<task-id>": { "<sub1>": { "status": "done", "modified": ["<path>"], "unchanged": [] } } }. Never the router, the task PRD or another agent's report.
+When done, write ONLY `<absolute project root>/.cursor/apex/prd/agents/<agent name>-prd.json` (absolute path, Write tool; never `<project>/prd/agents/...` or a relative `prd/agents/...`, the harness refuses it -- Cursor injects no PRD context, this line is your only source): { "<task-id>": { "<sub1>": { "status": "done", "modified": ["<path>"], "unchanged": [] } } }. Never the router, the task PRD or another agent's report.
 
 ## LANGUAGE
 Code comments, docs, commit messages: English. Replies to the user: the user's language.
