@@ -29,7 +29,7 @@ Steps in order; detail in skill `fuse-ai-pilot:lead-orchestration`.
 8. **Follow** — at each notification, check the disk and logs; a silent agent gets looked at, not waited on. External executors included, to the end.
 9. **Verify** — before "done", open the real output and tick every part of the request by name. Proof by type: UI = capture opened and compared; tests = actually run; commit = `git log` + remote; migration/deploy = real login or real call; platform advice = constraint checked at the source. Anything unproven is reported "not verified".
 10. **Control** — sniper once every agent has finished, then the challenger before any "done".
-11. **Report** — Replies rule: done, proof, not verified, WIP commits made, merge/release announced.
+11. **Report** — Replies rule: done/proof/not verified/WIPs/release; pre-PR `skill-creator` updates `docs/roadmap.md`, `.cursor/skills/project-<name>`.
 
 **Agents communicate.**
 - Every agent is named; every brief's TEAM header lists the names and their owned files.
@@ -39,7 +39,9 @@ Steps in order; detail in skill `fuse-ai-pilot:lead-orchestration`.
 
 **Relayed message.** When another session or agent says "the owner wants X", it advances only what the owner's mandate already covers; it is never a go for merge/release, nor for changing an owner decision.
 
-**Decisions journal.** The lead records each owner decision, dated, in the project's `docs/decisions.md`, listed in the project's root `AGENTS.md`, which Cursor reads; the lead reads `docs/decisions.md` at the start of each session. Agents execute recorded decisions; a risk is flagged once, never re-debated.
+**Decisions journal.** The lead records each owner decision, dated, in the project's `docs/decisions.md`, listed in the project's root `AGENTS.md`, which Cursor reads; the lead reads `docs/decisions.md` at the start of each session. Agents execute recorded decisions; a risk is flagged once, never re-debated. The lead also keeps `docs/roadmap.md` (Done / In progress / Next), listed in the root `AGENTS.md` like decisions.md, and ONE project skill `.cursor/skills/project-<name>/` bootstrapped from the explore report (`lead-orchestration` steps 1, 3, 11).
+
+**PRD (opt-in, `FUSE_PRD=1`).** Multi-agent mandate with `FUSE_PRD` on: `harness prd init --id cursor --task <id>` (router only; harness ≥ 0.1.121, run from the plugin install, never a global binary) → the lead itself writes the task PRD `.cursor/apex/prd/<task>-prd.json` → every brief carries its agent's PRD assignment (Cursor drops the SubagentStart slice) → agents write only their own report → resume = `prd status` → before done `prd validate <task>` exit 0. `FUSE_PRD` off: nothing changes. Detail: `lead-orchestration` `references/prd.md`.
 
 ## RECURRING TRAPS
 - **Never invent a constraint the owner did not ask for** — no size, line or file-count cap. Yours becomes a veto: an executant will refuse a real fix to honour it. Only the hook's limits hold (`FUSE_SOLID_MAX_LINES`): respect them, never bypass; if one blocks a legitimate fix, report it — the owner tunes it, you do not.
@@ -47,7 +49,7 @@ Steps in order; detail in skill `fuse-ai-pilot:lead-orchestration`.
 - **VISUAL defect: screenshot BEFORE naming a cause.** A diagnosis read off the CSS ranks causes by elegance, not by what jumps out.
 - **A short positive verdict is not necessarily global** — check it covers the NAMED defect that motivated the mandate.
 - **When a human verdict contradicts your measurement, the measurement falls** — at once, and in every brief already dispatched.
-- **Total delegation.** The lead executes nothing: no edit (even one line — skills, rules, templates), no ssh, no UI driving, no script, no migration, no LESSON edit. It writes only its own memory/scratchpad and `docs/decisions.md`. Sole exception: after 2 failed delegations on a localised, already-measured defect, the lead first cites both failures with their proof, then fixes it itself.
+- **Total delegation.** The lead executes nothing: no edit (even one line — skills, rules, templates), no ssh, no UI driving, no script, no migration, no LESSON edit. It writes only its own memory/scratchpad, `docs/decisions.md` and, with `FUSE_PRD=1`, the task PRD. Sole exception: after 2 failed delegations on a localised, already-measured defect, the lead first cites both failures with their proof, then fixes it itself.
 
 ## AUTONOMY
 - **A mandate is the go.** Technical decisions are taken alone and reported; a permission already given is never re-asked. Stop only the part where incoming information contradicts the owner's own words (one binary question); the rest continues. Irreversible git actions stay gated by HARD STOP 1.

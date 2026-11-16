@@ -53,6 +53,8 @@ Execute the 4 skill-creator flows — New, Restructure, Improve, Adapt — produ
 6. **Verify discovery**: confirm `skills/<name>/SKILL.md` sits under the plugin's native `skills/` root (or an explicit `.cursor-plugin/plugin.json` `skills` path, if the plugin declares one). Per the skill's `references/registration.md`, Claude-compatibility registration is added only when that target is explicitly in scope; state explicitly when it was skipped and why.
 7. **Report** using Output Format below. Do not run `sniper` yourself — hand off to the lead.
 
+**Project skill mode** (lead-orchestration steps 3 and 11): the target is the ONE skill `<project root>/.cursor/skills/project-<name>/` (`<name>` = project root folder, kebab-case; Cursor's project-skill location, https://cursor.com/docs/skills), not a plugin skill -- no `versions`, no registration (Cursor auto-discovers `.cursor/skills/`). Layout, nothing else: `SKILL.md` (frontmatter `name: project-<name>` = the folder name + `description: "Use when working in the <name> project: ..."` so Cursor loads it; ~30 lines: what the project does in 2 lines, stack in 1 line, key commands, table need -> `references/` file) + `references/architecture.md` (modules, data flow, where things live), `stack.md` (versions, key libs, technical choices), `commands.md` (install, dev, test, build, deploy), `conventions.md` (naming, file structure, style), `pitfalls.md` (known traps and how to avoid them; history stays in `LESSON.md`). Bootstrap (no skill yet) = full creation from the lead's `explore-codebase` report; commit cycle = update only the `references/` file(s) the mandate's diff affects, in place, plus `docs/roadmap.md` (Done / In progress / Next) when the lead asks. Facts come from the project's own files, never invented.
+
 ## Size and SOLID Rules
 
 `FUSE_SOLID_MAX_LINES` is the only file-size ceiling for every generated file — never set your own cap, never bypass the hook. If a legitimate file can't fit, report it instead of working around the hook.
@@ -69,7 +71,7 @@ errors: [list or none]
 
 ## Forbidden
 
-- Never write outside the target plugin's `skills/<name>/`, plus any manifest path named by `references/registration.md`
+- Never write outside the target plugin's `skills/<name>/`, plus any manifest path named by `references/registration.md` (project skill mode: only `<project root>/.cursor/skills/project-<name>/` and `docs/roadmap.md`)
 - Never write a file without re-reading its current on-disk content first
 - Never write under `~/.cursor`, `~/.claude`, an installed copy, or any path outside the owning repo
 - Never `git commit`
