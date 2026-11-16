@@ -51,7 +51,7 @@ ALLOW="$(cd /tmp && hook '{"hook_event_name":"beforeShellExecution","command":"l
 case "$ALLOW" in *'"permission":"allow"'*) ok "guard allows benign command on $now" ;; *) fail "benign not allowed: $ALLOW" ;; esac
 
 # ---- Regression: 0.1.115 falsely flags `( ... 2>&1) || true` as a file write ------------
-# Fixed in 0.1.116, so HARNESS_MIN (0.1.116) must pull a real 0.1.115 install forward.
+# Fixed in 0.1.116, so HARNESS_MIN (0.1.123) must pull a real 0.1.115 install forward.
 if [ "$LATEST" = 0.1.115 ]; then echo "registry latest is 0.1.115: regression case skipped"; else
 HOME_DIR="$TMP/home2"; CR="$HOME_DIR/.cursor/.fusengine-global"
 mkdir -p "$CR/versions/0.1.115"
