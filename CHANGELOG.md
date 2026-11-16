@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.1.17] - 16-11-2026
+
+- feat(lead): per-project `docs/roadmap.md` and a project skill at
+  `.cursor/skills/project-<name>/`, in `AGENTS.md`, `fuse-rules`
+  `user-rules/fuse-global.mdc` and `templates/CLAUDE.md.template`,
+  `lead-orchestration` and `skill-creator` (agent + skill) — port of
+  claude-plugins v1.40.5
+- feat(lead): opt-in PRD workflow (`FUSE_PRD=1`) — the lead writes the task
+  PRD (`lead-orchestration/references/prd.md`) and each brief carries a
+  PRD ASSIGNMENT block (`references/brief-template.md`)
+- docs(decisions): decisions journal records the 2026-11-16 "Release 0.1.17
+  without real Cursor run" owner decision
+- chore(plugins): PATCH bump, mirrored in `.cursor-plugin/marketplace.json` —
+  fuse-rules 1.0.29, fuse-ai-pilot 1.2.49
+- chore(marketplace): suite `metadata.version` 0.1.16 → 0.1.17, README version
+  badge updated
+- Not verified: real Cursor run — `cursor-agent` usage limit reached on the
+  Free plan
+- Known: the PRD workflow stays inactive until the installed harness is
+  ≥ 0.1.121 (`HARNESS_MIN` still 0.1.116)
+
 ## [0.1.16] - 16-11-2026
 
 - docs(rules): COORDINATOR PATH step 3 (Analyze) adds `brainstorming`
