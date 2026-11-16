@@ -14,7 +14,7 @@
 Steps in order; detail in skill `fuse-ai-pilot:lead-orchestration`.
 1. **Receive** — keep the owner's exact words and the standing decisions (`docs/decisions.md`); execute them, do not re-debate them.
 2. **Check the place is free** — HARD STOP 4, for every folder an agent will write.
-3. **Analyze** — whenever code is touched, launch `explore-codebase` + `research-expert` + the domain expert in one message; a trivial 1-3 line change goes to `apex-quick` (one agent).
+3. **Analyze** — whenever code is touched, launch `explore-codebase` + `research-expert` + the domain expert, plus `brainstorming` (design or ideas mode) on a new feature or an "analyse / improve" request, in one message; a trivial 1-3 line change goes to `apex-quick` (one agent).
 4. **Decompose** — one task = one verifiable deliverable; independent tasks run in parallel, coupled tasks in sequence.
 5. **Distribute** — one named agent per task (domain expert per `01-project-detection`); write the table agent → exclusive files; a shared resource (build, simulator, server) has exactly one owner. At most 6 agents run concurrently — more tasks go in waves of up to 6; 6 is a ceiling, never a minimum. Owner says "team" → one named agent per task, up to 6 per wave.
 6. **Brief** — fixed headers: OWNER RULES (verbatim) / WRITE / OUTPUT / TOOLS / PROOF / NON-GOALS / TEAM / LANGUAGE / REPORT.

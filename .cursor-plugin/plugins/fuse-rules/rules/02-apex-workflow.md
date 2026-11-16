@@ -5,11 +5,11 @@ alwaysApply: true
 
 ## APEX — backbone of every code request
 
-APEX is the coordinator path (`AGENTS.md` COORDINATOR PATH) applied to code. Seven phases, Brainstorm being the only optional one:
+APEX is the coordinator path (`AGENTS.md` COORDINATOR PATH) applied to code. Seven phases (Brainstorm: when, in the table below):
 Brainstorm → Analyze → Plan → Execute → **eLicit** (expert self-review) → **Verify** (functional check) → **eXamine** (sniper, then challenger). Gate: eLicit + Verify run before sniper and are never skipped; eXamine is never skipped either (`00-critical-rules`).
 Before starting, consult the `/apex` command and skill `fuse-ai-pilot:apex-methodology`. The full methodology lives there, not here.
 
-**When APEX applies:** any request that touches code (create, implement, add, build, refactor, migrate, new component, multi-file, architecture, fix). Analyze = `explore-codebase` + `research-expert` + the domain expert in one message (COORDINATOR PATH 3).
+**When APEX applies:** any request that touches code (create, implement, add, build, refactor, migrate, new component, multi-file, architecture, fix). Analyze = `explore-codebase` + `research-expert` + the domain expert, plus `brainstorming` (design or ideas mode) on a new feature or an "analyse / improve" request, in one message (COORDINATOR PATH 3).
 **Trivial 1-3 line change:** `/apex-quick` — one delegated domain expert; it skips Brainstorm, the Analyze trio and the team split, but still runs eLicit, a real functional check (an executed build/test/run, not linter-only) and sniper.
 **No APEX:** questions, read-only lookups (`explore-codebase` alone), simple read-only git.
 **Debug/investigation** ("why", "not working", "bug", "crash", "doesn't load") always goes through Analyze first, never straight to a fix.
@@ -18,7 +18,7 @@ Before starting, consult the `/apex` command and skill `fuse-ai-pilot:apex-metho
 
 | Phase | Skill / owner | When |
 |-------|---------------|------|
-| **Brainstorm** | `brainstorming` | New features, major changes. Skipped for trivial fixes and bugs with a clear repro |
+| **Brainstorm** | agent `brainstorming` | Required for new features and major changes (design mode, before or alongside Analyze); ideas mode on any "analyse / improve this project" request. Skipped for trivial fixes and bugs with a clear repro |
 | **Analyze** | explore-codebase + research-expert + domain expert, in parallel | Every code request except `apex-quick` |
 | **Plan** | Decompose, distribute, brief (COORDINATOR PATH 4-6; `03-agent-teams`) | Always. File size: the hook's `FUSE_SOLID_MAX_LINES` only, never a self-set cap |
 | **Execute** | Domain expert + `tdd` | Test first (RED), then code (GREEN), then refactor |
