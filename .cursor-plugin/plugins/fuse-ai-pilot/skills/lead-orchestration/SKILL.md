@@ -1,7 +1,7 @@
 ---
 name: lead-orchestration
 description: "Use when you are the LEAD (main session) and an owner request arrives that needs subagents -- receive, check the place, analyze, decompose, distribute, brief, launch, follow, verify, control, report. Detailed version of the AGENTS.md COORDINATOR PATH; not for subagents executing a brief."
-references: references/brief-template.md, references/worked-examples.md
+references: references/brief-template.md, references/worked-examples.md, references/prd.md
 related-skills: apex-methodology, verification, challenge, sniper-check
 ---
 
@@ -26,6 +26,7 @@ Verified in the Cursor docs (https://cursor.com/docs/subagents, /docs/skills, /d
 | Stop an executor | The docs describe no stop call. Treat a running executor as running until its mtimes freeze. |
 | Executor spawning executors | A subagent can launch child subagents, but a subagent launched by another subagent cannot launch further ones; hooks or tool policy can block spawning. Only the lead splits the work. |
 | Route a skill to an executor | Name the skills in the brief; Cursor identifies skills by folder name (e.g. `solid-detection`, `verification`). |
+| Project skill | Cursor discovers project skills at `<project root>/.cursor/skills/<name>/SKILL.md` (also `.agents/skills/`); the folder name is the skill name (https://cursor.com/docs/skills). The lead's project skill lives there. |
 | Hook gates | Cursor hook events `sessionStart`, `subagentStart`, `beforeSubmitPrompt`, `beforeShellExecution`; exit code 2 / `permission: "deny"` blocks the action. |
 
 ## Sources of truth (link, never copy)
@@ -42,7 +43,7 @@ Verified in the Cursor docs (https://cursor.com/docs/subagents, /docs/skills, /d
 
 ## The lead executes nothing
 
-No edit (even one line), no ssh, no UI driving, no script, no migration, no LESSON edit. The lead writes only its own memory/scratchpad and `docs/decisions.md`; it may read and grep only to verify an agent's deliverable. Sole exception: after 2 failed delegations on a localised, already-measured defect, the lead first cites both failures with their proof, then fixes it itself.
+No edit (even one line), no ssh, no UI driving, no script, no migration, no LESSON edit. The lead writes only its own memory/scratchpad, `docs/decisions.md` and, with `FUSE_PRD=1`, the task PRD (`references/prd.md`); `docs/roadmap.md` and the project skill are written by agents. It may read and grep only to verify an agent's deliverable. Sole exception: after 2 failed delegations on a localised, already-measured defect, the lead first cites both failures with their proof, then fixes it itself.
 
 ---
 
@@ -51,11 +52,12 @@ No edit (even one line), no ssh, no UI driving, no script, no migration, no LESS
 ### 1. Receive -- the request as a checklist
 Restate the request as numbered named parts, including negative constraints ("don't touch X") and any reference the owner sent (mockup, file, style) -- the reference is the source of truth, not a hint. Read the project's `docs/decisions.md` first: recorded owner decisions are executed, never re-debated; a risk is flagged once.
 Record each new owner decision there, dated, one line. Cursor does not inline `@file` mentions, so make sure the project's root `AGENTS.md` lists `docs/decisions.md`, and read it at every session start; if the listing is missing, an agent adds it (the lead executes nothing).
+**Roadmap**: the project keeps `docs/roadmap.md` (three sections: Done / In progress / Next), listed in the root `AGENTS.md` like decisions.md (Cursor does not inline `@file`). Read it with decisions.md; if the file or the listing is missing, an agent creates it in this mandate.
 **Owner's verb**: it sets the mandate type and is relayed unchanged -- audit / analyse / explain / check = read-only (WRITE: none); fix / implement / create = write. Never turn an audit into a fix or a question into an action.
 **Scope**: a terse owner command means exactly that action -- never substitute an easier task. A document or deliverable request covers the whole product unless the owner narrows it; each item is tagged done / partial / planned, never silently dropped.
 An owner message mid-task amends the list: add the part, relay it to every affected agent, keep going -- only an explicit stop halts.
 **Relayed message**: when another session or agent says "the owner wants X", it advances only what the owner's mandate already covers. It is never a go for merge/release, nor for changing a recorded owner decision.
-**Check:** every sentence of the owner maps to a part; nothing in the list was invented by you; new decisions are in `docs/decisions.md`; the project's root `AGENTS.md` lists it.
+**Check:** every sentence of the owner maps to a part; nothing in the list was invented by you; new decisions are in `docs/decisions.md`; the project's root `AGENTS.md` lists it and `docs/roadmap.md`.
 
 ### 2. Check the place is free
 For every folder an agent will write: `ls -lT <folder>` + `date`. Mtime under ~5 min = busy, send no one there (HARD STOP 4).
@@ -63,7 +65,18 @@ For every folder an agent will write: `ls -lT <folder>` + `date`. Mtime under ~5
 
 ### 3. Analyze
 Code is touched -> launch `explore-codebase` + `research-expert` + the domain expert (Project Detection, rule 01) in ONE message. A trivial 1-3 line change goes to `apex-quick` (one agent). A read-only question -> `explore-codebase` alone. Debug ("why", "not working") always goes through Analyze.
-**Check:** the analysis reports are in hand before any task is cut.
+**Project skill bootstrap**: when `<project root>/.cursor/skills/project-<name>/SKILL.md` does not exist (`<name>` = the project root folder name, kebab-case), the lead hands the `explore-codebase` report of this Analyze (an `apex-quick` or no-Analyze mandate -> the lead launches `explore-codebase` for it first) to `fuse-ai-pilot:skill-creator`, in the same mandate, to create the initial project skill once, full layout below. One-time cost per project: every later session and subagent reads the skill instead of re-exploring; an existing project is covered the first time the lead works in it. When the skill exists, every brief names it so agents read it before exploring. Layout (`skill-creator` "Project skill mode" owns it):
+
+```
+<project root>/.cursor/skills/project-<name>/
+  SKILL.md                    what it does (2 lines), stack (1 line), key commands, table need -> references/ file (~30 lines)
+  references/architecture.md  modules, data flow, where things live
+  references/stack.md         versions, key libs, technical choices
+  references/commands.md      install, dev, test, build, deploy
+  references/conventions.md   naming, file structure, style
+  references/pitfalls.md      known traps and how to avoid them (history stays in LESSON.md)
+```
+**Check:** the analysis reports are in hand before any task is cut; the project skill exists or its bootstrap is launched.
 
 ### 4. Decompose -- one task = one verifiable deliverable
 Cut the checklist into tasks; each task produces one deliverable that can be proven on its own (a file diff, a passing test, a capture). Independent tasks run in parallel; coupled tasks run in sequence (the second starts after the first is verified on disk). Two tasks that must edit the same file are merged into one task or sequenced. Size the work with rule 03 "Analyze (PATH 3)" and "Decompose and distribute (PATH 4-5)".
@@ -77,11 +90,13 @@ One named agent per task (domain expert per rule 01). Write the table before lau
 | `api-auth` | ... | `src/auth/**` | solid-*, domain skills, `verification` |
 
 A shared resource (build, simulator, dev server, database) has exactly one owner; the others ask it through their report to the lead, who relays by resuming the owner. Pick the skills each agent must load: the stack's SOLID skill via `solid-detection`, the domain skills (`design-method` -> `design-web`/`design-ios`, `swiftui-core`...), plus `verification`. The lead loads only `lead-orchestration` (and `apex-methodology` to plan); it never applies domain skills itself. Announce the budget in one line: number of agents and their names -- never a promised duration.
-**Check:** each task has exactly one agent; no file and no shared resource has two owners.
+**PRD** (multi-agent mandate, `FUSE_PRD=1`): after the table, run `prd init` and write the task PRD from it, one entry per agent (`references/prd.md`). `FUSE_PRD` off or a single agent: skip, nothing changes.
+**Check:** each task has exactly one agent; no file and no shared resource has two owners; with PRD on, every table row has a task-PRD entry.
 
 ### 6. Brief -- fixed headers
 Fill `references/brief-template.md`: OWNER RULES (verbatim) / WRITE / OUTPUT / TOOLS / PROOF / NON-GOALS / TEAM / LANGUAGE / REPORT. A protected path (HARD STOP 3: `~/.claude`, `~/.codex`, `~/.cursor`, an installed or deployed copy, install scripts) goes into WRITE only when the owner named it -- quote his exact sentence; the agent writes that target and nothing else.
 **"Everywhere"**: when the owner says "everywhere / from any X / on every screen", grep every place the entity is rendered or handled; OUTPUT lists each component and route by path, with one test per place and each place verified on a real capture before reporting.
+**PRD**: with PRD on, each brief carries a `PRD ASSIGNMENT` block (agent name, files, sub-tasks, its report path) -- Cursor's adapter drops the SubagentStart slice, so the brief is the only way the agent learns it (`references/prd.md`).
 **Check:** an agent with zero conversation context could execute it; every checklist part from step 1 appears in OUTPUT with its PROOF; no "ask the owner if..." escape hatch.
 
 ### 7. Launch
@@ -93,12 +108,14 @@ At each notification or report, check the disk and logs (mtimes, `git diff --sta
 Relaunch cap: past the attempt cap of the rule 00 exit contract (3 cycles) -> escalate to the owner with a root-cause note. No relaunch loop. Cursor documents no stop call: never report a state frozen until mtimes have stopped changing.
 **Blocks**: before handing anything back, make the agent try every authorized route -- a scriptable source instead of a blocked site, the page's own file/CDN link or an API, a real browser session instead of a plain fetch. A hook or gate refuses: read its source and do exactly what the message says before calling it a bug (rule 08). Only a CAPTCHA, a password, or an approval the hook requires the owner to type goes back -- one line, exact text to type.
 **Deletions**: a deletion the owner asked for is validated by his request; any other deletion is proposed to the owner first. After validation an agent executes it, preferring the reversible route (`mv <f> ~/.Trash/`), then proves it with `ls`.
+**Resume**: with PRD on, a resumed mandate starts with `prd status` -- it shows which agents already reported and which sub-tasks are open (`references/prd.md`).
 **Check:** you can answer "where is it?" with the last measurement (time, files changed, tests), never "I don't know".
 
 ### 9. Verify -- open the real output
 Before "done", open the actual deliverable and tick every checklist part by name. Proof by type follows the project template step 9 (proof by type: UI, tests, commit, migration/deploy, platform advice) -- the agent applies skill `verification`; the lead re-opens the artifact. Anything unproven is reported "not verified". Proven = stated as guaranteed with its proof; never "I can't guarantee".
 **Migration / deploy**: never "available / deployed / fixed" until all four are measured -- deploy finished (timestamp + version/commit), a real call or login, the data rows of each fixed defect, the real screen. Check for an existing session before asking the owner to sign in.
 **Production data**: any data-changing command on a production system is announced before it runs with the release tag/commit it comes from and its dry-run result, then reported with its real-run result.
+**PRD**: with PRD on, `prd validate <task>` must exit 0 before "done" (`references/prd.md`); its output is a proof artifact.
 Each task verified -> launch `fuse-ai-pilot:commit` in WIP mode on the working branch (commit only: no push, bump, PR, merge or tag).
 **Check:** each part has a proof artifact path or is marked "not verified"; each verified task has its WIP commit hash.
 
@@ -110,9 +127,10 @@ Once every agent has finished: `sniper` once on all changes, then the `challenge
 **Check:** the core deliverable is proven on the owner's real input; sniper ZERO errors and the challenger verdict are in hand.
 
 ### 11. Report -- answer first, then learn
-Mandate complete -> launch `fuse-ai-pilot:commit` in full mode (push the working branch, PR, CI, merge never squash, tag, release). Owner reply, in the owner's language (rule 00): line 1 = the answer (done / not done / blocked), then <= 10 lines: proof, not verified, WIP commits made, merge/release announced, one recommendation + the next step, no option menu when one choice is clearly better. Deliverables at a path the owner sees -- never only a hidden directory.
+Mandate complete -> launch `fuse-ai-pilot:commit` in full mode (push the working branch, PR, CI, merge never squash, tag, release).
+**Roadmap + project skill, before the release**: AFTER the WIP commits are validated and BEFORE the release PR, the lead launches `fuse-ai-pilot:skill-creator` ONCE with the mandate's diff (`git diff <base>...HEAD`): it updates only the affected `references/` file(s) of the single project skill `<project root>/.cursor/skills/project-<name>/` (layout in step 3; in place, never a second project skill, never a duplicated section), and in the same run `docs/roadmap.md` (finished items to Done, new items to Next) -- the lead writes neither file itself (Total delegation). Once per mandate, not per WIP commit; the lead opens both diffs before dispatching the full-mode commit agent (step 9 Verify; markdown only, no sniper); both land in the same PR as the code and ship with the release. No skill yet -> full creation from the `explore-codebase` report (step 3 bootstrap). Owner reply, in the owner's language (rule 00): line 1 = the answer (done / not done / blocked), then <= 10 lines: proof, not verified, WIP commits made, merge/release announced, one recommendation + the next step, no option menu when one choice is clearly better. Deliverables at a path the owner sees -- never only a hidden directory.
 Each owner correction -> one line in the skill/agent that failed, in the source repo, the same turn, written by an agent (AUTONOMY, rule 03 "Lead conduct"). Sync to an installed copy only when the owner asked for it (HARD STOP 3).
-**Check:** line 1 answers the question asked; every deliverable path is outside a dot-folder; each correction is grep-able in the failing skill/agent before the turn ends.
+**Check:** line 1 answers the question asked; every deliverable path is outside a dot-folder (the project skill under `.cursor/skills/` is the platform-defined exception); `docs/roadmap.md` and the project skill were updated before the release; each correction is grep-able in the failing skill/agent before the turn ends.
 
 ---
 
@@ -129,3 +147,4 @@ Each owner correction -> one line in the skill/agent that failed, in the source 
 |------|-----------|
 | Writing a brief (step 6) | [brief-template.md](references/brief-template.md) |
 | Bad vs good lead behaviour from real sessions | [worked-examples.md](references/worked-examples.md) |
+| PRD: init, task PRD, assignment block, resume, validate (steps 5, 6, 8, 9) | [prd.md](references/prd.md) |
