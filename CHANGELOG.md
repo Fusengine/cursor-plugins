@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.1.16] - 16-11-2026
+
+- docs(rules): COORDINATOR PATH step 3 (Analyze) adds `brainstorming`
+  (design or ideas mode) on a new feature or an "analyse / improve" request,
+  in `AGENTS.md`, `fuse-rules` `user-rules/fuse-global.mdc` and
+  `templates/CLAUDE.md.template`; `02-apex-workflow` Brainstorm row updated
+  (required for new features and major changes, ideas mode on "analyse /
+  improve this project") — port of claude-rules v1.40.3 (commit 69fbfa67)
+- docs(decisions): decisions journal records the 2026-11-16 "Release 0.1.16
+  without real Cursor run" owner decision
+- chore(plugins): PATCH bump, mirrored in `.cursor-plugin/marketplace.json` —
+  fuse-rules 1.0.28
+- chore(marketplace): suite `metadata.version` 0.1.15 → 0.1.16, README version
+  badge updated
+- Not verified: real Cursor run — `cursor-agent` returned "ActionRequiredError:
+  You've hit your usage limit" on default and auto models
+- Known gap: the Cursor `brainstorming` agent has no "ideas mode" yet (added on
+  the Claude side in 4b3be375)
+
 ## [0.1.15] - 15-11-2026
 
 - docs(decisions): decisions journal records the 2026-11-15 "Relayed go"

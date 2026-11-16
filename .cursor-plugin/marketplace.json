@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Professional Cursor plugins with APEX workflow, SOLID principles, and expert development agents for Next.js, Laravel, Swift, Tailwind CSS, and more",
-    "version": "0.1.15"
+    "version": "0.1.16"
   },
   "plugins": [
     {
@@ -398,7 +398,7 @@
       "name": "fuse-rules",
       "source": ".cursor-plugin/plugins/fuse-rules",
       "description": "Global rules for all sessions: APEX workflow, SOLID/DRY enforcement, project detection, agent delegation, frontend/git standards",
-      "version": "1.0.27",
+      "version": "1.0.28",
       "author": {
         "name": "Fusengine"
       },
