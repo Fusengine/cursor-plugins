@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.1.18] - 16-11-2026
+
+- fix(lead): the per-project roadmap and project skill are written only in
+  write mandates that reach the commit cycle — a read-only mandate writes
+  nothing (`AGENTS.md`, `fuse-rules` `user-rules/fuse-global.mdc` and
+  `templates/CLAUDE.md.template`, `lead-orchestration`, `skill-creator`)
+- fix(lead): the PRD applies only to write mandates with 2+ agents — the
+  agent runs `prd init`, the lead runs status/validate/compact, and each agent
+  reports at `<project>/.cursor/apex/prd/agents/<agent>-prd.json`
+  (`lead-orchestration/references/prd.md`, `references/brief-template.md`)
+- fix(harness): `HARNESS_MIN` 0.1.116 → 0.1.123 in every `hook.sh` and
+  `plugin-runtime/hook.sh` (`prd init` idempotent with `exists`, a wrong
+  `prd/agents` path refused); harness auto-update tests updated
+- docs(decisions): decisions journal records the 2026-11-16 "Harness minimum
+  0.1.123 and release 0.1.18 without real Cursor run" owner decision
+- chore(plugins): PATCH bump, mirrored in `.cursor-plugin/marketplace.json` —
+  core-guards 1.1.42, fuse-ai-pilot 1.2.50, fuse-cartographer 1.0.17,
+  fuse-changelog 1.0.19, fuse-design 2.2.15, fuse-go 1.0.11, fuse-hermes
+  1.0.3, fuse-laravel 1.2.13, fuse-lessons 1.0.11, fuse-nextjs 1.1.29,
+  fuse-php 1.0.12, fuse-react 1.0.26, fuse-rules 1.0.30, fuse-rust 1.0.12,
+  fuse-security 1.0.23, fuse-seo 1.0.17, fuse-shadcn-ui 1.0.23, fuse-solid
+  1.0.24, fuse-swift-apple-expert 1.1.26, fuse-tailwindcss 1.1.16,
+  fuse-tanstack-start 1.0.10, fuse-typescript 1.0.12
+- chore(marketplace): suite `metadata.version` 0.1.17 → 0.1.18, README version
+  badge updated
+- Not verified: real Cursor run — `cursor-agent` usage limit reached; the
+  refusal of a `prd/agents` write is verified from the harness source only
+
 ## [0.1.17] - 16-11-2026
 
 - feat(lead): per-project `docs/roadmap.md` and a project skill at
