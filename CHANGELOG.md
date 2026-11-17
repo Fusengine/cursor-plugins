@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.1.19] - 17-11-2026
+
+- feat(solid-swift): add `references/state-machines.md` (sum-type state
+  modeling, `LoadState<Value>` with a `Sendable` + `Equatable` `LoadFailure`,
+  Tier 2 transition functions) and move the `viewmodel.md` / `view.md`
+  templates from `isLoading` booleans to `state: LoadState<…>`; align the
+  `concurrency-patterns`, `dependency-inversion` and `single-responsibility`
+  examples; adapted from the `coreyfloyd/agents` fork, credit to coreyfloyd
+  (https://github.com/coreyfloyd/agents) (fuse-swift-apple-expert)
+- docs(decisions): decisions journal records the 2026-11-13 "Swift state
+  modeling port" owner decision
+- docs(swift-apple-expert): real-test record
+  `docs/real-test-solid-swift-load-state-2026-11-13.md` (verdict BLOCKED)
+- chore(plugins): PATCH bump, mirrored in `.cursor-plugin/marketplace.json` —
+  fuse-swift-apple-expert 1.1.27
+- chore(marketplace): suite `metadata.version` 0.1.18 → 0.1.19, README version
+  badge updated
+- Not verified: real Cursor run BLOCKED by usage limit; merged on owner's
+  explicit go (2026-11-13 attempt BLOCKED, no Swift produced; still blocked
+  2026-11-17)
+
 ## [0.1.18] - 16-11-2026
 
 - fix(lead): the per-project roadmap and project skill are written only in
